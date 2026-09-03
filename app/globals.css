@@ -132,11 +132,15 @@ button { color: inherit; }
 .lab-metric.m1 { left: 7%; top: 29%; }.lab-metric.m2 { right: 5%; top: 42%; }.lab-metric.m3 { left: 12%; bottom: 24%; }
 .factory { padding: 145px 0; }
 .factory-reel { height: min(68vw, 760px); margin-top: 70px; position: relative; overflow: hidden; background: #0c2f2a; }
-.factory-reel video { width: 100%; height: 100%; object-fit: cover; }
-.video-shade { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,20,17,.65), transparent 58%), linear-gradient(90deg, rgba(0,20,17,.25), transparent); }
+.factory-reel video { width: 100%; height: 100%; object-fit: cover; cursor: pointer; }
+.video-shade { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(to top, rgba(0,20,17,.65), transparent 58%), linear-gradient(90deg, rgba(0,20,17,.25), transparent); }
 .video-index, .video-caption { position: absolute; z-index: 2; margin: 0; color: white; font-size: 8px; letter-spacing: .18em; }
 .video-index { left: 28px; top: 28px; }.video-caption { left: 28px; bottom: 28px; }.video-caption span { color: var(--acid); margin-right: 18px; }
-.play-disc { position: absolute; left: 50%; top: 50%; width: 88px; height: 88px; display: grid; place-items: center; transform: translate(-50%,-50%); color: #06362f; border-radius: 50%; background: var(--acid); box-shadow: 0 20px 50px rgba(0,0,0,.18); }
+.play-disc { position: absolute; z-index: 3; left: 50%; top: 50%; width: 88px; height: 88px; display: grid; place-items: center; transform: translate(-50%,-50%) scale(1); color: #06362f; border: 0; border-radius: 50%; background: var(--acid); box-shadow: 0 20px 50px rgba(0,0,0,.18); cursor: pointer; opacity: 1; transition: opacity .22s ease, transform .22s ease; }
+.play-disc:hover { transform: translate(-50%,-50%) scale(1.06); }
+.play-disc.is-playing { opacity: 0; pointer-events: none; transform: translate(-50%,-50%) scale(.9); }
+.factory-reel:hover .play-disc.is-playing, .play-disc:focus-visible { opacity: 1; pointer-events: auto; transform: translate(-50%,-50%) scale(1); }
+.play-disc:focus-visible { outline: 2px solid white; outline-offset: 4px; }
 .factory-stills { margin-top: 18px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; }
 .factory-stills article { height: 310px; position: relative; overflow: hidden; background: #dfe4da; }
 .factory-stills img, .factory-stills video { width: 100%; height: 100%; object-fit: cover; }

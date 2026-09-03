@@ -12,6 +12,7 @@ import {
   Clipboard,
   Globe2,
   Menu,
+  Pause,
   Play,
   ShieldCheck,
 } from 'lucide-react';
@@ -104,15 +105,24 @@ function FormulaCanvas({ color, compact = false }: { color?: string; compact?: b
 }
 
 export default function Home() {
+  const factoryVideoRef = useRef<HTMLVideoElement>(null);
   const [activeFormula, setActiveFormula] = useState(formulas[0]);
   const [format, setFormat] = useState('Capsules');
   const [volume, setVolume] = useState('10k–50k units');
   const [submitted, setSubmitted] = useState(false);
+  const [isFactoryPlaying, setIsFactoryPlaying] = useState(true);
   const brief = `Jentoor project brief\nGoal: ${activeFormula.label}\nFormat: ${format}\nVolume: ${volume}`;
 
   const copyBrief = async () => {
     await navigator.clipboard?.writeText(brief);
     setSubmitted(true);
+  };
+
+  const toggleFactoryVideo = () => {
+    const video = factoryVideoRef.current;
+    if (!video) return;
+    if (video.paused) void video.play();
+    else video.pause();
   };
 
   return (
@@ -175,8 +185,8 @@ export default function Home() {
       <section className="factory" id="factory">
         <div className="shell factory-head"><div><p className="section-tag">04 / INSIDE THE FACTORY</p><h2>Proof lives<br /><em>in the process.</em></h2></div><p>Real production footage. Real equipment. Real visibility into the work behind every finished unit.</p></div>
         <div className="factory-reel shell">
-          <video src="/media/production-line.mp4" autoPlay muted loop playsInline poster="/media/production-floor.jpg" aria-label="Jentoor production line" />
-          <div className="video-shade" /><p className="video-index">HW / FACTORY FILM 001</p><div className="play-disc"><Play size={20} fill="currentColor" /></div><p className="video-caption"><span>01:12</span> Precision liquid filling &amp; quality control</p>
+          <video ref={factoryVideoRef} src="/media/production-line.mp4" autoPlay muted loop playsInline poster="/media/production-floor.jpg" aria-label="Jentoor production line" onClick={toggleFactoryVideo} onPlay={() => setIsFactoryPlaying(true)} onPause={() => setIsFactoryPlaying(false)} />
+          <div className="video-shade" /><p className="video-index">JT / FACTORY FILM 001</p><button className={`play-disc${isFactoryPlaying ? ' is-playing' : ''}`} type="button" onClick={toggleFactoryVideo} aria-label={isFactoryPlaying ? 'Pause factory film' : 'Play factory film'}>{isFactoryPlaying ? <Pause size={22} fill="currentColor" /> : <Play size={20} fill="currentColor" />}</button><p className="video-caption"><span>01:12</span> Precision liquid filling &amp; quality control</p>
         </div>
         <div className="factory-stills shell"><article><img src="/media/equipment.jpg" alt="Stainless steel production equipment in a clean manufacturing room" /><span>FILLING SYSTEM / 01</span></article><article className="video-card"><video src="/media/packaging-line.mp4" autoPlay muted loop playsInline /><span>PACKAGING LINE / 02</span></article><div className="factory-copy"><strong>Controlled operations.<br />Documented at every stage.</strong><p>Dry formulation, mixing, encapsulation, liquid filling, tablet compression, primary packaging, quality-unit operations and warehousing.</p></div></div>
       </section>
