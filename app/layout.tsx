@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: 'Healthway Nutraceuticals | Evidence-led Manufacturing',
   description: 'Global nutraceutical formulation, manufacturing and fulfillment for ambitious wellness brands.',
-  metadataBase: new URL('https://healthway-nutraceuticals.com'),
+  metadataBase: new URL('https://healthway-nutraceuticals.lianggg26.chatgpt.site'),
   openGraph: {
     title: 'Healthway Nutraceuticals | Evidence-led Manufacturing',
     description: 'Evidence-led nutrition, engineered to scale.',
