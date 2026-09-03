@@ -13,18 +13,18 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Healthway Nutraceuticals | Evidence-led Manufacturing',
+  title: 'Jentoor Nutraceuticals | Evidence-led Manufacturing',
   description: 'Global nutraceutical formulation, manufacturing and fulfillment for ambitious wellness brands.',
-  metadataBase: new URL('https://healthway-nutraceuticals.lianggg26.chatgpt.site'),
+  metadataBase: new URL('https://jentoor.com'),
   openGraph: {
-    title: 'Healthway Nutraceuticals | Evidence-led Manufacturing',
+    title: 'Jentoor Nutraceuticals | Evidence-led Manufacturing',
     description: 'Evidence-led nutrition, engineered to scale.',
     type: 'website',
-    images: [{ url: '/og.png', width: 1200, height: 630, alt: 'Healthway evidence-led nutrition' }],
+    images: [{ url: '/og.png', width: 1200, height: 630, alt: 'Jentoor evidence-led nutrition' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Healthway Nutraceuticals | Evidence-led Manufacturing',
+    title: 'Jentoor Nutraceuticals | Evidence-led Manufacturing',
     description: 'Evidence-led nutrition, engineered to scale.',
     images: ['/og.png'],
   },

@@ -108,7 +108,7 @@ export default function Home() {
   const [format, setFormat] = useState('Capsules');
   const [volume, setVolume] = useState('10k–50k units');
   const [submitted, setSubmitted] = useState(false);
-  const brief = `Healthway project brief\nGoal: ${activeFormula.label}\nFormat: ${format}\nVolume: ${volume}`;
+  const brief = `Jentoor project brief\nGoal: ${activeFormula.label}\nFormat: ${format}\nVolume: ${volume}`;
 
   const copyBrief = async () => {
     await navigator.clipboard?.writeText(brief);
@@ -119,7 +119,7 @@ export default function Home() {
     <main>
       <section className="hero" id="top">
         <nav className="nav shell" aria-label="Primary navigation">
-          <a className="brand" href="#top" aria-label="Healthway home"><span className="brand-mark">H</span><span>HEALTHWAY<small>NUTRACEUTICALS</small></span></a>
+          <a className="brand" href="#top" aria-label="Jentoor home"><img className="brand-logo" src="/brand/jentoor-white.svg" alt="Jentoor" /></a>
           <div className="nav-links"><a href="#capabilities">Capabilities</a><a href="#formula">Formulation</a><a href="#standards">Standards</a><a href="#about">About</a></div>
           <a className="nav-cta" href="#quote">Start a project <ArrowUpRight size={16} /></a>
           <button className="menu-button" aria-label="Open navigation"><Menu size={19} /></button>
@@ -146,7 +146,7 @@ export default function Home() {
       </section>
 
       <section className="manifesto shell" id="about">
-        <p className="section-tag">01 / WHY HEALTHWAY</p>
+        <p className="section-tag">01 / WHY JENTOOR</p>
         <div><h2>Where rigorous manufacturing<br />meets <em>category-defining wellness.</em></h2><p>We unite formulation thinking, disciplined quality systems and responsive production under one accountable partnership. No black boxes. No generic solutions. Just a clearer route from idea to shelf.</p></div>
       </section>
 
@@ -175,7 +175,7 @@ export default function Home() {
       <section className="factory" id="factory">
         <div className="shell factory-head"><div><p className="section-tag">04 / INSIDE THE FACTORY</p><h2>Proof lives<br /><em>in the process.</em></h2></div><p>Real production footage. Real equipment. Real visibility into the work behind every finished unit.</p></div>
         <div className="factory-reel shell">
-          <video src="/media/production-line.mp4" autoPlay muted loop playsInline poster="/media/production-floor.jpg" aria-label="Healthway production line" />
+          <video src="/media/production-line.mp4" autoPlay muted loop playsInline poster="/media/production-floor.jpg" aria-label="Jentoor production line" />
           <div className="video-shade" /><p className="video-index">HW / FACTORY FILM 001</p><div className="play-disc"><Play size={20} fill="currentColor" /></div><p className="video-caption"><span>01:12</span> Precision liquid filling &amp; quality control</p>
         </div>
         <div className="factory-stills shell"><article><img src="/media/equipment.jpg" alt="Stainless steel production equipment in a clean manufacturing room" /><span>FILLING SYSTEM / 01</span></article><article className="video-card"><video src="/media/packaging-line.mp4" autoPlay muted loop playsInline /><span>PACKAGING LINE / 02</span></article><div className="factory-copy"><strong>Controlled operations.<br />Documented at every stage.</strong><p>Dry formulation, mixing, encapsulation, liquid filling, tablet compression, primary packaging, quality-unit operations and warehousing.</p></div></div>
@@ -200,8 +200,8 @@ export default function Home() {
       </section>
 
       <section className="social-wall">
-        <div className="shell social-head"><div><p className="section-tag">07 / FROM THE FLOOR</p><h2>Manufacturing,<br /><em>without the curtain.</em></h2></div><div className="social-actions"><a href="https://www.instagram.com/zaxvchung/" target="_blank" rel="noreferrer" aria-label="Healthway on Instagram"><SocialGlyph kind="instagram" /></a><span aria-label="LinkedIn link pending"><SocialGlyph kind="linkedin" /></span><span aria-label="YouTube link pending"><SocialGlyph kind="youtube" /></span></div></div>
-        <div className="social-cards shell"><article><video src="/media/bottling-line.mp4" muted autoPlay loop playsInline /><div><SocialGlyph kind="instagram" /> PRODUCTION NOTE 014</div></article><article><video src="/media/warehouse.mp4" muted autoPlay loop playsInline /><div><SocialGlyph kind="instagram" /> DELIVERY NOTE 021</div></article><article className="social-text"><small>FIELD NOTE / QUALITY</small><blockquote>“Visibility is not a marketing layer. It is how good manufacturing earns trust.”</blockquote><span>HEALTHWAY OPERATIONS</span></article></div>
+        <div className="shell social-head"><div><p className="section-tag">07 / FROM THE FLOOR</p><h2>Manufacturing,<br /><em>without the curtain.</em></h2></div><div className="social-actions"><a href="https://www.instagram.com/zaxvchung/" target="_blank" rel="noreferrer" aria-label="Jentoor on Instagram"><SocialGlyph kind="instagram" /></a><span aria-label="LinkedIn link pending"><SocialGlyph kind="linkedin" /></span><span aria-label="YouTube link pending"><SocialGlyph kind="youtube" /></span></div></div>
+        <div className="social-cards shell"><article><video src="/media/bottling-line.mp4" muted autoPlay loop playsInline /><div><SocialGlyph kind="instagram" /> PRODUCTION NOTE 014</div></article><article><video src="/media/warehouse.mp4" muted autoPlay loop playsInline /><div><SocialGlyph kind="instagram" /> DELIVERY NOTE 021</div></article><article className="social-text"><small>FIELD NOTE / QUALITY</small><blockquote>“Visibility is not a marketing layer. It is how good manufacturing earns trust.”</blockquote><span>JENTOOR OPERATIONS</span></article></div>
       </section>
 
       <section className="quote" id="quote">
@@ -218,7 +218,7 @@ export default function Home() {
         </div>
       </section>
 
-      <footer><div className="shell footer-top"><a className="brand" href="#top"><span className="brand-mark">H</span><span>HEALTHWAY<small>NUTRACEUTICALS</small></span></a><p>Evidence-led nutrition.<br />Engineered to scale.</p><a className="back-top" href="#top">BACK TO TOP <ArrowUpRight size={16} /></a></div><div className="shell footer-bottom"><span>© {new Date().getFullYear()} HEALTHWAY NUTRACEUTICALS</span><span>GUANGZHOU · GLOBAL PARTNERSHIPS</span><span>PRIVACY · TERMS</span></div></footer>
+      <footer><div className="shell footer-top"><a className="brand" href="#top" aria-label="Jentoor home"><img className="brand-logo" src="/brand/jentoor-white.svg" alt="Jentoor" /></a><p>Evidence-led nutrition.<br />Engineered to scale.</p><a className="back-top" href="#top">BACK TO TOP <ArrowUpRight size={16} /></a></div><div className="shell footer-bottom"><span>© {new Date().getFullYear()} JENTOOR NUTRACEUTICALS</span><span>GUANGZHOU · GLOBAL PARTNERSHIPS</span><span>PRIVACY · TERMS</span></div></footer>
     </main>
   );
 }

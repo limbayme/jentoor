@@ -1,6 +1,6 @@
-# Healthway Nutraceuticals
+# Jentoor Nutraceuticals
 
-Premium international manufacturing site for Healthway, combining evidence-led brand storytelling, real factory media and an interactive Three.js formula experience.
+Premium international manufacturing site for Jentoor, combining evidence-led brand storytelling, real factory media and an interactive Three.js formula experience.
 
 ## Local development
 
