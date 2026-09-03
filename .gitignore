@@ -38,3 +38,4 @@ next-env.d.ts
 /work/
 /.coscli-snapshot/
 /coscli_output/
+/coscli.log

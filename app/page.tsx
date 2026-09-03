@@ -1,14 +1,12 @@
 'use client';
 
-import { Canvas, useFrame } from '@react-three/fiber';
-import { Float, OrbitControls } from '@react-three/drei';
+import dynamic from 'next/dynamic';
 import {
-  ArrowDown,
   ArrowDownRight,
-  ArrowLeft,
   ArrowRight,
   ArrowUpRight,
   Check,
+  ChevronDown,
   Clipboard,
   Globe2,
   Menu,
@@ -16,11 +14,66 @@ import {
   Play,
   ShieldCheck,
 } from 'lucide-react';
-import { useMemo, useRef, useState } from 'react';
-import type { Group } from 'three';
+import { useEffect, useRef, useState } from 'react';
 
 const assetOrigin = (process.env.NEXT_PUBLIC_ASSET_ORIGIN || '').replace(/\/$/, '');
 const assetUrl = (path: string) => `${assetOrigin}${path}`;
+
+const FormulaCanvas = dynamic(() => import('./formula-canvas'), {
+  ssr: false,
+  loading: () => <div className="formula-canvas-placeholder" aria-hidden="true" />,
+});
+
+function DeferredFormulaCanvas({ color, compact = false }: { color?: string; compact?: boolean }) {
+  const hostRef = useRef<HTMLDivElement>(null);
+  const [nearViewport, setNearViewport] = useState(false);
+  const [ready, setReady] = useState(false);
+  const [useLightweightVisual, setUseLightweightVisual] = useState(false);
+
+  useEffect(() => {
+    const handle = window.requestAnimationFrame(() => {
+      const nav = navigator as Navigator & { deviceMemory?: number };
+      const lowPowerDevice = (nav.deviceMemory ?? 8) <= 4 || navigator.hardwareConcurrency <= 4;
+      const compactViewport = window.matchMedia('(max-width: 760px), (pointer: coarse)').matches;
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      setUseLightweightVisual(lowPowerDevice || compactViewport || reducedMotion);
+    });
+    return () => window.cancelAnimationFrame(handle);
+  }, []);
+
+  useEffect(() => {
+    const host = hostRef.current;
+    if (!host) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setNearViewport(true);
+        observer.disconnect();
+      }
+    }, { rootMargin: '400px' });
+    observer.observe(host);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!nearViewport || useLightweightVisual) return;
+    const browserWindow = window as Window & {
+      requestIdleCallback?: (callback: () => void, options?: { timeout: number }) => number;
+      cancelIdleCallback?: (handle: number) => void;
+    };
+    if (browserWindow.requestIdleCallback) {
+      const handle = browserWindow.requestIdleCallback(() => setReady(true), { timeout: 1400 });
+      return () => browserWindow.cancelIdleCallback?.(handle);
+    }
+    const handle = window.setTimeout(() => setReady(true), 500);
+    return () => window.clearTimeout(handle);
+  }, [nearViewport, useLightweightVisual]);
+
+  return (
+    <div ref={hostRef} className="formula-canvas-runtime">
+      {ready && !useLightweightVisual ? <FormulaCanvas color={color} compact={compact} /> : <div className="formula-canvas-placeholder" style={{ '--capsule-color': color || '#d9ff6b' } as React.CSSProperties} aria-hidden="true"><i /></div>}
+    </div>
+  );
+}
 
 const formulas = [
   { id: 'energy', label: 'Energy + Focus', short: 'EF', color: '#d9ff6b', note: 'Clarity / endurance' },
@@ -36,6 +89,68 @@ const formats = [
   { number: '04', title: 'Liquids', copy: 'Ingestible liquids from functional shots to drop-based systems.', icon: 'liquid' },
 ];
 
+function ProjectSelect({
+  label,
+  value,
+  options,
+  onChange,
+}: {
+  label: string;
+  value: string;
+  options: Array<{ value: string; label: string }>;
+  onChange: (value: string) => void;
+}) {
+  const rootRef = useRef<HTMLDivElement>(null);
+  const [open, setOpen] = useState(false);
+  const selected = options.find((option) => option.value === value) || options[0];
+
+  useEffect(() => {
+    if (!open) return;
+    const closeOnOutsideClick = (event: PointerEvent) => {
+      if (!rootRef.current?.contains(event.target as Node)) setOpen(false);
+    };
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setOpen(false);
+    };
+    document.addEventListener('pointerdown', closeOnOutsideClick);
+    document.addEventListener('keydown', closeOnEscape);
+    return () => {
+      document.removeEventListener('pointerdown', closeOnOutsideClick);
+      document.removeEventListener('keydown', closeOnEscape);
+    };
+  }, [open]);
+
+  return (
+    <div className={`project-select${open ? ' is-open' : ''}`} ref={rootRef}>
+      <span className="project-select-label">{label}</span>
+      <button className="project-select-trigger" type="button" aria-haspopup="listbox" aria-expanded={open} onClick={() => setOpen((current) => !current)}>
+        <strong>{selected.label}</strong>
+        <ChevronDown size={18} />
+      </button>
+      {open && (
+        <div className="project-select-options" role="listbox" aria-label={label}>
+          {options.map((option) => (
+            <button
+              type="button"
+              role="option"
+              aria-selected={option.value === value}
+              className={option.value === value ? 'is-selected' : ''}
+              key={option.value}
+              onClick={() => {
+                onChange(option.value);
+                setOpen(false);
+              }}
+            >
+              <span>{option.label}</span>
+              {option.value === value && <Check size={16} />}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function FormatIcon({ type }: { type: string }) {
   return (
     <span className={`format-symbol ${type}`} aria-hidden="true">
@@ -50,61 +165,21 @@ function SocialGlyph({ kind }: { kind: 'instagram' | 'linkedin' | 'youtube' }) {
   return <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="4" /><path className="fill" d="m10 9 6 3-6 3z" /></svg>;
 }
 
-function FormulaCapsule({ color = '#d9ff6b', compact = false }: { color?: string; compact?: boolean }) {
-  const group = useRef<Group>(null);
-  useFrame((state, delta) => {
-    if (!group.current) return;
-    group.current.rotation.y += delta * (compact ? 0.28 : 0.16);
-    group.current.rotation.z = Math.sin(state.clock.elapsedTime * 0.45) * 0.08 - 0.24;
-  });
+function ViewportVideo({ src, className }: { src: string; className?: string }) {
+  const videoRef = useRef<HTMLVideoElement>(null);
 
-  const beads = useMemo(() => Array.from({ length: compact ? 32 : 22 }, (_, index) => ({
-    angle: index * 2.399,
-    radius: 0.16 + (index % 5) * 0.13,
-    y: -0.48 + (index % 7) * 0.14,
-    size: 0.052 + (index % 3) * 0.018,
-  })), [compact]);
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) void video.play().catch(() => undefined);
+      else video.pause();
+    }, { rootMargin: '160px' });
+    observer.observe(video);
+    return () => observer.disconnect();
+  }, []);
 
-  return (
-    <Float speed={0.65} rotationIntensity={0.06} floatIntensity={0.14}>
-      <group ref={group} rotation={[0.2, -0.55, -0.24]} scale={compact ? 0.83 : 1}>
-        <mesh position={[0, 0.78, 0]}>
-          <sphereGeometry args={[1, 64, 64, 0, Math.PI * 2, 0, Math.PI / 2]} />
-          <meshPhysicalMaterial color={color} roughness={0.08} metalness={0.02} clearcoat={1} transmission={0.08} />
-        </mesh>
-        <mesh position={[0, 0.02, 0]}>
-          <cylinderGeometry args={[1, 1, 1.55, 64]} />
-          <meshPhysicalMaterial color={color} roughness={0.08} clearcoat={1} transmission={0.08} />
-        </mesh>
-        <mesh position={[0, -0.78, 0]} rotation={[Math.PI, 0, 0]}>
-          <sphereGeometry args={[1.01, 64, 64, 0, Math.PI * 2, 0, Math.PI / 2]} />
-          <meshPhysicalMaterial color="#effbe8" roughness={0.04} transmission={0.72} thickness={1.6} transparent opacity={0.72} />
-        </mesh>
-        <mesh position={[0, -0.02, 0]}>
-          <cylinderGeometry args={[1.01, 1.01, 1.55, 64]} />
-          <meshPhysicalMaterial color="#effbe8" roughness={0.04} transmission={0.72} thickness={1.6} transparent opacity={0.72} />
-        </mesh>
-        {beads.map((bead, index) => (
-          <mesh key={index} position={[Math.cos(bead.angle) * bead.radius, bead.y, Math.sin(bead.angle) * bead.radius]}>
-            <sphereGeometry args={[bead.size, 16, 16]} />
-            <meshStandardMaterial color={index % 3 === 0 ? color : index % 3 === 1 ? '#f3ffad' : '#ffffff'} emissive={color} emissiveIntensity={0.35} />
-          </mesh>
-        ))}
-      </group>
-    </Float>
-  );
-}
-
-function FormulaCanvas({ color, compact = false }: { color?: string; compact?: boolean }) {
-  return (
-    <Canvas camera={{ position: [0, 0, compact ? 5.5 : 6.2], fov: 36 }} dpr={[1, 1.6]} gl={{ alpha: true, antialias: true }}>
-      <ambientLight intensity={1.4} />
-      <directionalLight position={[4, 6, 5]} intensity={5} color="#ecffd7" />
-      <pointLight position={[-4, -2, 3]} intensity={16} color={color || '#00e998'} />
-      <FormulaCapsule color={color} compact={compact} />
-      <OrbitControls enableZoom={false} enablePan={false} rotateSpeed={0.25} minPolarAngle={1.1} maxPolarAngle={2.02} minAzimuthAngle={-0.55} maxAzimuthAngle={0.55} />
-    </Canvas>
-  );
+  return <video ref={videoRef} src={src} className={className} preload="metadata" muted loop playsInline />;
 }
 
 export default function Home() {
@@ -119,6 +194,7 @@ export default function Home() {
   const copyBrief = async () => {
     await navigator.clipboard?.writeText(brief);
     setSubmitted(true);
+    window.setTimeout(() => setSubmitted(false), 1800);
   };
 
   const toggleFactoryVideo = () => {
@@ -127,6 +203,17 @@ export default function Home() {
     if (video.paused) void video.play();
     else video.pause();
   };
+
+  useEffect(() => {
+    const video = factoryVideoRef.current;
+    if (!video) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) void video.play().catch(() => setIsFactoryPlaying(false));
+      else video.pause();
+    }, { rootMargin: '160px' });
+    observer.observe(video);
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <main>
@@ -146,7 +233,7 @@ export default function Home() {
             <div className="hero-actions"><a className="primary-button" href="#quote">Build your formula <ArrowDownRight size={18} /></a><a className="text-link" href="#factory">Explore our factory <span>↗</span></a></div>
           </div>
           <div className="hero-visual" aria-label="Interactive 3D nutrient capsule. Drag to rotate.">
-            <FormulaCanvas />
+            <DeferredFormulaCanvas />
             <div className="orbit orbit-one" /><div className="orbit orbit-two" />
             <div className="formula-note note-one"><b>01</b><span>Active system<br /><strong>Precision blend</strong></span></div>
             <div className="formula-note note-two"><b>22</b><span>Micro-elements<br /><strong>Inside the formula</strong></span></div>
@@ -177,7 +264,7 @@ export default function Home() {
             <div className="formula-options" role="radiogroup" aria-label="Formula direction">{formulas.map((item) => <button key={item.id} role="radio" aria-checked={activeFormula.id === item.id} onClick={() => setActiveFormula(item)} className={activeFormula.id === item.id ? 'active' : ''}><span style={{ background: item.color }}>{item.short}</span><b>{item.label}<small>{item.note}</small></b><ArrowRight size={16} /></button>)}</div>
           </div>
           <div className="lab-visual" style={{ '--formula-color': activeFormula.color } as React.CSSProperties}>
-            <div className="lab-canvas"><FormulaCanvas color={activeFormula.color} compact /></div>
+            <div className="lab-canvas"><DeferredFormulaCanvas color={activeFormula.color} compact /></div>
             <div className="lab-ring r1" /><div className="lab-ring r2" />
             <div className="lab-readout"><span>ACTIVE CONCEPT</span><strong>{activeFormula.label}</strong><p>FORMULA SIGNAL / <b>LIVE</b></p></div>
             <div className="lab-metric m1"><span>01</span>Outcome</div><div className="lab-metric m2"><span>02</span>Delivery</div><div className="lab-metric m3"><span>03</span>Scale</div>
@@ -188,10 +275,10 @@ export default function Home() {
       <section className="factory" id="factory">
         <div className="shell factory-head"><div><p className="section-tag">04 / INSIDE THE FACTORY</p><h2>Proof lives<br /><em>in the process.</em></h2></div><p>Real production footage. Real equipment. Real visibility into the work behind every finished unit.</p></div>
         <div className="factory-reel shell">
-          <video ref={factoryVideoRef} src={assetUrl('/media/production-line.mp4')} autoPlay muted loop playsInline poster={assetUrl('/media/production-floor.jpg')} aria-label="Jentoor production line" onClick={toggleFactoryVideo} onPlay={() => setIsFactoryPlaying(true)} onPause={() => setIsFactoryPlaying(false)} />
+          <video ref={factoryVideoRef} src={assetUrl('/media/production-line.mp4')} preload="metadata" muted loop playsInline poster={assetUrl('/media/production-floor.jpg')} aria-label="Jentoor production line" onClick={toggleFactoryVideo} onPlay={() => setIsFactoryPlaying(true)} onPause={() => setIsFactoryPlaying(false)} />
           <div className="video-shade" /><p className="video-index">JT / FACTORY FILM 001</p><button className={`play-disc${isFactoryPlaying ? ' is-playing' : ''}`} type="button" onClick={toggleFactoryVideo} aria-label={isFactoryPlaying ? 'Pause factory film' : 'Play factory film'}>{isFactoryPlaying ? <Pause size={22} fill="currentColor" /> : <Play size={20} fill="currentColor" />}</button><p className="video-caption"><span>01:12</span> Precision liquid filling &amp; quality control</p>
         </div>
-        <div className="factory-stills shell"><article><img src={assetUrl('/media/equipment.jpg')} alt="Stainless steel production equipment in a clean manufacturing room" /><span>FILLING SYSTEM / 01</span></article><article className="video-card"><video src={assetUrl('/media/packaging-line.mp4')} autoPlay muted loop playsInline /><span>PACKAGING LINE / 02</span></article><div className="factory-copy"><strong>Controlled operations.<br />Documented at every stage.</strong><p>Dry formulation, mixing, encapsulation, liquid filling, tablet compression, primary packaging, quality-unit operations and warehousing.</p></div></div>
+        <div className="factory-stills shell"><article><img src={assetUrl('/media/equipment.jpg')} loading="lazy" decoding="async" alt="Stainless steel production equipment in a clean manufacturing room" /><span>FILLING SYSTEM / 01</span></article><article className="video-card"><ViewportVideo src={assetUrl('/media/packaging-line.mp4')} /><span>PACKAGING LINE / 02</span></article><div className="factory-copy"><strong>Controlled operations.<br />Documented at every stage.</strong><p>Dry formulation, mixing, encapsulation, liquid filling, tablet compression, primary packaging, quality-unit operations and warehousing.</p></div></div>
       </section>
 
       <section className="standards" id="standards">
@@ -214,16 +301,16 @@ export default function Home() {
 
       <section className="social-wall">
         <div className="shell social-head"><div><p className="section-tag">07 / FROM THE FLOOR</p><h2>Manufacturing,<br /><em>without the curtain.</em></h2></div><div className="social-actions"><a href="https://www.instagram.com/zaxvchung/" target="_blank" rel="noreferrer" aria-label="Jentoor on Instagram"><SocialGlyph kind="instagram" /></a><span aria-label="LinkedIn link pending"><SocialGlyph kind="linkedin" /></span><span aria-label="YouTube link pending"><SocialGlyph kind="youtube" /></span></div></div>
-        <div className="social-cards shell"><article><video src={assetUrl('/media/bottling-line.mp4')} muted autoPlay loop playsInline /><div><SocialGlyph kind="instagram" /> PRODUCTION NOTE 014</div></article><article><video src={assetUrl('/media/warehouse.mp4')} muted autoPlay loop playsInline /><div><SocialGlyph kind="instagram" /> DELIVERY NOTE 021</div></article><article className="social-text"><small>FIELD NOTE / QUALITY</small><blockquote>“Visibility is not a marketing layer. It is how good manufacturing earns trust.”</blockquote><span>JENTOOR OPERATIONS</span></article></div>
+        <div className="social-cards shell"><article><ViewportVideo src={assetUrl('/media/bottling-line.mp4')} /><div><SocialGlyph kind="instagram" /> PRODUCTION NOTE 014</div></article><article><ViewportVideo src={assetUrl('/media/warehouse.mp4')} /><div><SocialGlyph kind="instagram" /> DELIVERY NOTE 021</div></article><article className="social-text"><small>FIELD NOTE / QUALITY</small><blockquote>“Visibility is not a marketing layer. It is how good manufacturing earns trust.”</blockquote><span>JENTOOR OPERATIONS</span></article></div>
       </section>
 
       <section className="quote" id="quote">
         <div className="shell quote-grid">
           <div className="quote-copy"><p className="section-tag light">08 / START A PROJECT</p><h2>Your next formula<br /><em>starts here.</em></h2><p>Configure a concise first brief. We will use it to shape a more focused formulation and manufacturing conversation.</p><div className="response-time"><span>01</span><p>Prepared for technical review<br /><strong>No generic sales loop</strong></p></div></div>
           <form className="quote-builder" onSubmit={(e) => { e.preventDefault(); setSubmitted(true); }}>
-            <label>01 / PRIMARY OUTCOME<select value={activeFormula.id} onChange={(e) => setActiveFormula(formulas.find((item) => item.id === e.target.value) || formulas[0])}>{formulas.map((item) => <option key={item.id} value={item.id}>{item.label}</option>)}</select></label>
-            <label>02 / DOSAGE FORMAT<select value={format} onChange={(e) => setFormat(e.target.value)}>{formats.map((item) => <option key={item.title}>{item.title}</option>)}</select></label>
-            <label>03 / INITIAL VOLUME<select value={volume} onChange={(e) => setVolume(e.target.value)}><option>Under 10k units</option><option>10k–50k units</option><option>50k–250k units</option><option>250k+ units</option></select></label>
+            <ProjectSelect label="01 / PRIMARY OUTCOME" value={activeFormula.id} options={formulas.map((item) => ({ value: item.id, label: item.label }))} onChange={(value) => setActiveFormula(formulas.find((item) => item.id === value) || formulas[0])} />
+            <ProjectSelect label="02 / DOSAGE FORMAT" value={format} options={formats.map((item) => ({ value: item.title, label: item.title }))} onChange={setFormat} />
+            <ProjectSelect label="03 / INITIAL VOLUME" value={volume} options={['Under 10k units', '10k–50k units', '50k–250k units', '250k+ units'].map((item) => ({ value: item, label: item }))} onChange={setVolume} />
             <div className="brief-preview"><span>YOUR PROJECT SIGNAL</span><b style={{ color: activeFormula.color }}>{activeFormula.short}</b><p>{activeFormula.label}<small>{format} / {volume}</small></p></div>
             <button type="button" onClick={copyBrief}>{submitted ? <><Check size={18} /> Brief copied</> : <><Clipboard size={18} /> Copy project brief</>}<ArrowRight size={18} /></button>
             <p className="form-note">Connect this brief to your preferred CRM, email or WhatsApp endpoint at launch.</p>

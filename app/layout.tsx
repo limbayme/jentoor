@@ -16,7 +16,6 @@ export const metadata: Metadata = {
   title: 'Jentoor Nutraceuticals | Evidence-led Manufacturing',
   description: 'Global nutraceutical formulation, manufacturing and fulfillment for ambitious wellness brands.',
   metadataBase: new URL('https://jentoor.com'),
-  manifest: '/site.webmanifest',
   icons: {
     icon: [
       { url: '/favicon.svg', type: 'image/svg+xml' },
@@ -45,6 +44,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="dns-prefetch" href="//media.jentoor.com" />
+        <link rel="preconnect" href="https://media.jentoor.com" crossOrigin="anonymous" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
