@@ -16,6 +16,22 @@ export const metadata: Metadata = {
   title: 'Jentoor Nutraceuticals | Evidence-led Manufacturing',
   description: 'Global nutraceutical formulation, manufacturing and fulfillment for ambitious wellness brands.',
   metadataBase: new URL('https://jentoor.com'),
+  manifest: '/site.webmanifest',
+  icons: {
+    icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/favicon-32.png', sizes: '32x32', type: 'image/png' },
+    ],
+    apple: [{ url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }],
+  },
+  manifest: '/site.webmanifest',
+  icons: {
+    icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/favicon-32.png', sizes: '32x32', type: 'image/png' },
+    ],
+    apple: [{ url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }],
+  },
   openGraph: {
     title: 'Jentoor Nutraceuticals | Evidence-led Manufacturing',
     description: 'Evidence-led nutrition, engineered to scale.',
