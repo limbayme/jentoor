@@ -19,6 +19,9 @@ import {
 import { useMemo, useRef, useState } from 'react';
 import type { Group } from 'three';
 
+const assetOrigin = (process.env.NEXT_PUBLIC_ASSET_ORIGIN || '').replace(/\/$/, '');
+const assetUrl = (path: string) => `${assetOrigin}${path}`;
+
 const formulas = [
   { id: 'energy', label: 'Energy + Focus', short: 'EF', color: '#d9ff6b', note: 'Clarity / endurance' },
   { id: 'beauty', label: 'Beauty from Within', short: 'BW', color: '#ff9ab8', note: 'Skin / hair / nails' },
@@ -185,19 +188,19 @@ export default function Home() {
       <section className="factory" id="factory">
         <div className="shell factory-head"><div><p className="section-tag">04 / INSIDE THE FACTORY</p><h2>Proof lives<br /><em>in the process.</em></h2></div><p>Real production footage. Real equipment. Real visibility into the work behind every finished unit.</p></div>
         <div className="factory-reel shell">
-          <video ref={factoryVideoRef} src="/media/production-line.mp4" autoPlay muted loop playsInline poster="/media/production-floor.jpg" aria-label="Jentoor production line" onClick={toggleFactoryVideo} onPlay={() => setIsFactoryPlaying(true)} onPause={() => setIsFactoryPlaying(false)} />
+          <video ref={factoryVideoRef} src={assetUrl('/media/production-line.mp4')} autoPlay muted loop playsInline poster={assetUrl('/media/production-floor.jpg')} aria-label="Jentoor production line" onClick={toggleFactoryVideo} onPlay={() => setIsFactoryPlaying(true)} onPause={() => setIsFactoryPlaying(false)} />
           <div className="video-shade" /><p className="video-index">JT / FACTORY FILM 001</p><button className={`play-disc${isFactoryPlaying ? ' is-playing' : ''}`} type="button" onClick={toggleFactoryVideo} aria-label={isFactoryPlaying ? 'Pause factory film' : 'Play factory film'}>{isFactoryPlaying ? <Pause size={22} fill="currentColor" /> : <Play size={20} fill="currentColor" />}</button><p className="video-caption"><span>01:12</span> Precision liquid filling &amp; quality control</p>
         </div>
-        <div className="factory-stills shell"><article><img src="/media/equipment.jpg" alt="Stainless steel production equipment in a clean manufacturing room" /><span>FILLING SYSTEM / 01</span></article><article className="video-card"><video src="/media/packaging-line.mp4" autoPlay muted loop playsInline /><span>PACKAGING LINE / 02</span></article><div className="factory-copy"><strong>Controlled operations.<br />Documented at every stage.</strong><p>Dry formulation, mixing, encapsulation, liquid filling, tablet compression, primary packaging, quality-unit operations and warehousing.</p></div></div>
+        <div className="factory-stills shell"><article><img src={assetUrl('/media/equipment.jpg')} alt="Stainless steel production equipment in a clean manufacturing room" /><span>FILLING SYSTEM / 01</span></article><article className="video-card"><video src={assetUrl('/media/packaging-line.mp4')} autoPlay muted loop playsInline /><span>PACKAGING LINE / 02</span></article><div className="factory-copy"><strong>Controlled operations.<br />Documented at every stage.</strong><p>Dry formulation, mixing, encapsulation, liquid filling, tablet compression, primary packaging, quality-unit operations and warehousing.</p></div></div>
       </section>
 
       <section className="standards" id="standards">
         <div className="shell standards-grid">
           <div><p className="section-tag light">05 / VERIFIED STANDARDS</p><h2>Trust should be<br /><em>visible.</em></h2><p className="standards-intro">We make qualification records accessible — so procurement and quality teams can verify before they commit.</p></div>
           <div className="certificate-list">
-            <a href="/certificates/nsf-certificate.pdf" target="_blank" rel="noreferrer"><span>01</span><div><b>NSF/ANSI 455-2</b><small>Guangzhou Yinglian Health Industry Co., Ltd · C0910528-HSCDS-1</small></div><strong>VALID TO 2027</strong><ArrowUpRight /></a>
-            <a href="/certificates/factory-qualifications.pdf" target="_blank" rel="noreferrer"><span>02</span><div><b>FDA Facility Registration</b><small>Guangzhou Jianrun Biotechnology Co., Ltd · Facility record</small></div><strong>VIEW RECORD</strong><ArrowUpRight /></a>
-            <a href="/certificates/factory-qualifications.pdf" target="_blank" rel="noreferrer"><span>03</span><div><b>ISO + HACCP Systems</b><small>Guangzhou Jianrun Biotechnology Co., Ltd · Qualification dossier</small></div><strong>VIEW RECORD</strong><ArrowUpRight /></a>
+            <a href={assetUrl('/certificates/nsf-certificate.pdf')} target="_blank" rel="noreferrer"><span>01</span><div><b>NSF/ANSI 455-2</b><small>Guangzhou Yinglian Health Industry Co., Ltd · C0910528-HSCDS-1</small></div><strong>VALID TO 2027</strong><ArrowUpRight /></a>
+            <a href={assetUrl('/certificates/factory-qualifications.pdf')} target="_blank" rel="noreferrer"><span>02</span><div><b>FDA Facility Registration</b><small>Guangzhou Jianrun Biotechnology Co., Ltd · Facility record</small></div><strong>VIEW RECORD</strong><ArrowUpRight /></a>
+            <a href={assetUrl('/certificates/factory-qualifications.pdf')} target="_blank" rel="noreferrer"><span>03</span><div><b>ISO + HACCP Systems</b><small>Guangzhou Jianrun Biotechnology Co., Ltd · Qualification dossier</small></div><strong>VIEW RECORD</strong><ArrowUpRight /></a>
           </div>
         </div>
         <p className="compliance-note shell">Certification and registration apply to the facilities and scopes named in each linked record. FDA registration does not denote FDA approval.</p>
@@ -211,7 +214,7 @@ export default function Home() {
 
       <section className="social-wall">
         <div className="shell social-head"><div><p className="section-tag">07 / FROM THE FLOOR</p><h2>Manufacturing,<br /><em>without the curtain.</em></h2></div><div className="social-actions"><a href="https://www.instagram.com/zaxvchung/" target="_blank" rel="noreferrer" aria-label="Jentoor on Instagram"><SocialGlyph kind="instagram" /></a><span aria-label="LinkedIn link pending"><SocialGlyph kind="linkedin" /></span><span aria-label="YouTube link pending"><SocialGlyph kind="youtube" /></span></div></div>
-        <div className="social-cards shell"><article><video src="/media/bottling-line.mp4" muted autoPlay loop playsInline /><div><SocialGlyph kind="instagram" /> PRODUCTION NOTE 014</div></article><article><video src="/media/warehouse.mp4" muted autoPlay loop playsInline /><div><SocialGlyph kind="instagram" /> DELIVERY NOTE 021</div></article><article className="social-text"><small>FIELD NOTE / QUALITY</small><blockquote>“Visibility is not a marketing layer. It is how good manufacturing earns trust.”</blockquote><span>JENTOOR OPERATIONS</span></article></div>
+        <div className="social-cards shell"><article><video src={assetUrl('/media/bottling-line.mp4')} muted autoPlay loop playsInline /><div><SocialGlyph kind="instagram" /> PRODUCTION NOTE 014</div></article><article><video src={assetUrl('/media/warehouse.mp4')} muted autoPlay loop playsInline /><div><SocialGlyph kind="instagram" /> DELIVERY NOTE 021</div></article><article className="social-text"><small>FIELD NOTE / QUALITY</small><blockquote>“Visibility is not a marketing layer. It is how good manufacturing earns trust.”</blockquote><span>JENTOOR OPERATIONS</span></article></div>
       </section>
 
       <section className="quote" id="quote">
