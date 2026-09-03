@@ -50,7 +50,7 @@ footer {
   contain-intrinsic-size: auto 900px;
 }
 html { scroll-behavior: smooth; }
-body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: Inter, Arial, Helvetica, sans-serif; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
 a { color: inherit; text-decoration: none; }
 .shell { width: min(1400px, calc(100% - 64px)); margin-inline: auto; }
 .hero { min-height: 100svh; overflow: hidden; position: relative; color: #effff2; background: radial-gradient(circle at 78% 48%, #0a5545 0, #073c34 24%, #052f2a 58%, #03241f 100%); }
