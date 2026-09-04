@@ -1,6 +1,5 @@
 'use client';
 import { useState } from 'react';
-import Link from 'next/link';
 import DeferredProcessScene from '../components/process-scenes/deferred-scene';
 import FormulaLab, { dosageFormats } from '../components/process-scenes/formula-lab';
 import type { Station } from '../components/process-scenes/factory-modules';
@@ -18,7 +17,7 @@ export default function SceneStudio() {
   const [paused,setPaused]=useState(false),[expanded,setExpanded]=useState(true),[interactive,setInteractive]=useState(false);
   const selected=stations.find(item=>item.id===station)!;
   return <main className={styles.studio}>
-    <header className={styles.header}><Link href="/" prefetch={false}>jentoor<span>®</span></Link><span>PROCESS OBJECTS / DESIGN STUDIES</span><b>OEM / ODM</b></header>
+    <header className={styles.header}><a href="/">jentoor<span>®</span></a><span>PROCESS OBJECTS / DESIGN STUDIES</span><b>OEM / ODM</b></header>
     <nav className={styles.viewNav} aria-label="Design study">{([{id:'hero',name:'01 / DNA Hero'},{id:'formula',name:'02 / Formula Lab'},{id:'factory',name:'03 / Smart Manufacturing'}] as const).map(item=><button key={item.id} aria-pressed={view===item.id} onClick={()=>{setView(item.id);setPaused(false);setExpanded(true);}}>{item.name}<span>↗</span></button>)}</nav>
     {view==='formula' ? <FormulaLab diagnostics/> : <div className={styles.layout}>
       <aside className={styles.sidebar}>
