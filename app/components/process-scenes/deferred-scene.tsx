@@ -6,7 +6,7 @@ import FormatStill from './format-still';
 const Runtime = lazy(() => import('./scene-runtime'));
 const OriginalCapsule = lazy(() => import('./original-capsule'));
 function Still({ kind }: Pick<SceneProps, 'kind'>) {
-  if (kind === 'capsule' || kind === 'gummy' || kind === 'softgel' || kind === 'film') return <div className={styles.still}><FormatStill kind={kind} /></div>;
+  if (kind === 'capsule' || kind === 'gummy' || kind === 'softgel' || kind === 'film' || kind === 'powder' || kind === 'liquid' || kind === 'chewable' || kind === 'lozenge') return <div className={styles.still}><FormatStill kind={kind} /></div>;
   return <div className={styles.still} aria-label={kind + ' static process illustration'}>
     <svg viewBox="0 0 500 360" className={styles.illustration} aria-hidden="true">
       <ellipse cx="250" cy="282" rx="175" ry="52" fill="#09281f" stroke="#8da891" strokeWidth="1" />

@@ -1,19 +1,18 @@
 'use client';
 import { useEffect, useState } from 'react';
 import DeferredProcessScene from './deferred-scene';
-import FormatStill from './format-still';
 import type { SceneKind } from './scene-runtime';
 import styles from './formula-lab.module.css';
 
 export const dosageFormats = [
   { id:'capsule', name:'Capsules', model:'capsule', note:'Shell, fill blend and delivery requirements shape the capsule brief.' },
   { id:'tablet', name:'Tablets', model:'tablet', note:'Compression, coating and the active core are considered together.' },
-  { id:'powder', name:'Powders', model:null, note:'Solubility, texture, flavor and packaging guide powder development.' },
-  { id:'liquid', name:'Liquids', model:null, note:'Liquid compatibility, filling and packaging guide the product route.' },
+  { id:'powder', name:'Powders', model:'powder', note:'Solubility, texture, flavor and packaging guide powder development.' },
+  { id:'liquid', name:'Liquids', model:'liquid', note:'Liquid compatibility, filling and packaging guide the product route.' },
   { id:'gummy', name:'Gummies', model:'gummy', note:'Shape, texture and serving format shape the gummy concept.' },
-  { id:'chewable', name:'Chewable Tablets', model:null, note:'Mouthfeel, taste and compression guide chewable tablet development.' },
+  { id:'chewable', name:'Chewable Tablets', model:'chewable', note:'Mouthfeel, taste and compression guide chewable tablet development.' },
   { id:'softgel', name:'Softgels', model:'softgel', note:'Fill compatibility, shell and seal requirements guide development.' },
-  { id:'lozenge', name:'Lozenges', model:null, note:'Sensory experience, form and serving requirements shape the brief.' },
+  { id:'lozenge', name:'Lozenges', model:'lozenge', note:'Sensory experience, form and serving requirements shape the brief.' },
   { id:'film', name:'Oral Dissolving Films', model:'film', note:'Film handling, oral experience and individual packaging shape the concept.' },
 ] as const;
 const outcomes = [
@@ -43,13 +42,13 @@ export default function FormulaLab({ onBriefChange, diagnostics = false }: { onB
         event.preventDefault(); const next=event.key==='Home'?0:event.key==='End'?dosageFormats.length-1:(index+steps[event.key]+dosageFormats.length)%dosageFormats.length;
         chooseFormat(dosageFormats[next].id); document.getElementById('format-'+dosageFormats[next].id)?.focus();
       }}>{item.name}<small>{item.model?'3D':'2D'}</small></button>)}</div>
-      <label className={styles.goal}>PRODUCT DIRECTION<select value={outcomeId} onChange={event=>{setOutcomeId(event.target.value);setCopied('');}}>{outcomes.map(item=><option key={item.id} value={item.id}>{item.name}</option>)}</select></label>
+      <div className={styles.goal}>PRODUCT DIRECTION<div className={styles.outcomes} role="group" aria-label="Product direction">{outcomes.map(item=><button type="button" aria-pressed={outcomeId===item.id} key={item.id} onClick={()=>{setOutcomeId(item.id);setCopied('');}}>{item.name}</button>)}</div></div>
       <p className={styles.note}>Directions describe the development brief, not verified product claims.</p>
       <div className={styles.brief}><pre>{brief}</pre><button type="button" onClick={copy}>Copy concept brief ↗</button><span role="status">{copied}</span></div>
     </div>
     <div className={styles.stage} id="formula-view" role="tabpanel" aria-labelledby={'format-'+format.id}>
       <div className={styles.stageHead}><span>OEM / ODM · DELIVERY STUDY</span><span>{format.model?interactive?'3D CONCEPT':'STATIC DEVICE VIEW':'2D FORMAT STUDY'}</span></div>
-      <div className={styles.canvas}>{format.model ? <DeferredProcessScene key={format.id} kind={format.model as SceneKind} expanded={expanded} paused={format.id==='capsule'?false:paused} accent={outcome.color} onModeChange={setInteractive} diagnostics={diagnostics}/> : <div className={styles.static}><FormatStill kind={format.id} accent={outcome.color}/></div>}</div>
+      <div className={styles.canvas}><DeferredProcessScene key={format.id} kind={format.model as SceneKind} expanded={expanded} paused={format.id==='capsule'?false:paused} accent={outcome.color} onModeChange={setInteractive} diagnostics={diagnostics}/></div>
       <div className={styles.caption}><span>{outcome.name} / {format.name}</span><h2>{format.name}</h2><p>{format.note}</p>
         {format.model && format.id!=='capsule' ? <fieldset disabled={!interactive}><button onClick={()=>setExpanded(!expanded)}>{expanded?'Bring elements together':'Explore the structure'}</button><button onClick={()=>setPaused(!paused)}>{paused?'Resume motion':'Pause motion'}</button></fieldset> : <p className={styles.mode}>{format.id==='capsule' ? 'Original capsule visual · drag to rotate on desktop' : 'Static format illustration · explore the delivery concept'}</p>}
       </div>

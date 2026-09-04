@@ -1,6 +1,5 @@
 'use client';
 
-import dynamic from 'next/dynamic';
 import {
   ArrowDownRight,
   ArrowRight,
@@ -9,71 +8,16 @@ import {
   ChevronDown,
   Clipboard,
   Globe2,
-  Menu,
   Pause,
   Play,
   ShieldCheck,
 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+import DeferredScene from './deferred-scene';
+import { SiteFooter, SiteHeader } from './site-chrome';
 
 const assetOrigin = (process.env.NEXT_PUBLIC_ASSET_ORIGIN || '').replace(/\/$/, '');
 const assetUrl = (path: string) => `${assetOrigin}${path}`;
-
-const FormulaCanvas = dynamic(() => import('./formula-canvas'), {
-  ssr: false,
-  loading: () => <div className="formula-canvas-placeholder" aria-hidden="true" />,
-});
-
-function DeferredFormulaCanvas({ color, compact = false }: { color?: string; compact?: boolean }) {
-  const hostRef = useRef<HTMLDivElement>(null);
-  const [nearViewport, setNearViewport] = useState(false);
-  const [ready, setReady] = useState(false);
-  const [useLightweightVisual, setUseLightweightVisual] = useState(false);
-
-  useEffect(() => {
-    const handle = window.requestAnimationFrame(() => {
-      const nav = navigator as Navigator & { deviceMemory?: number };
-      const lowPowerDevice = (nav.deviceMemory ?? 8) <= 4 || navigator.hardwareConcurrency <= 4;
-      const compactViewport = window.matchMedia('(max-width: 760px), (pointer: coarse)').matches;
-      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      setUseLightweightVisual(lowPowerDevice || compactViewport || reducedMotion);
-    });
-    return () => window.cancelAnimationFrame(handle);
-  }, []);
-
-  useEffect(() => {
-    const host = hostRef.current;
-    if (!host) return;
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) {
-        setNearViewport(true);
-        observer.disconnect();
-      }
-    }, { rootMargin: '400px' });
-    observer.observe(host);
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    if (!nearViewport || useLightweightVisual) return;
-    const browserWindow = window as Window & {
-      requestIdleCallback?: (callback: () => void, options?: { timeout: number }) => number;
-      cancelIdleCallback?: (handle: number) => void;
-    };
-    if (browserWindow.requestIdleCallback) {
-      const handle = browserWindow.requestIdleCallback(() => setReady(true), { timeout: 1400 });
-      return () => browserWindow.cancelIdleCallback?.(handle);
-    }
-    const handle = window.setTimeout(() => setReady(true), 500);
-    return () => window.clearTimeout(handle);
-  }, [nearViewport, useLightweightVisual]);
-
-  return (
-    <div ref={hostRef} className="formula-canvas-runtime">
-      {ready && !useLightweightVisual ? <FormulaCanvas color={color} compact={compact} /> : <div className="formula-canvas-placeholder" style={{ '--capsule-color': color || '#d9ff6b' } as React.CSSProperties} aria-hidden="true"><i /></div>}
-    </div>
-  );
-}
 
 const formulas = [
   { id: 'energy', label: 'Energy + Focus', short: 'EF', color: '#d9ff6b', note: 'Clarity / endurance' },
@@ -87,6 +31,11 @@ const formats = [
   { number: '02', title: 'Tablets', copy: 'Engineered compression, coating and stability for daily rituals.', icon: 'tablet' },
   { number: '03', title: 'Powders', copy: 'Flavor-forward blends built for solubility, texture and performance.', icon: 'powder' },
   { number: '04', title: 'Liquids', copy: 'Ingestible liquids from functional shots to drop-based systems.', icon: 'liquid' },
+  { number: '05', title: 'Gummies', copy: 'Chewable gummy formats with flavor, texture and shape development.', icon: 'gummy' },
+  { number: '06', title: 'Chewable Tablets', copy: 'Compressed chewable formats developed around taste and mouthfeel.', icon: 'chewable' },
+  { number: '07', title: 'Softgels', copy: 'Soft-shell formats with fill and shell compatibility reviewed for each formula.', icon: 'softgel' },
+  { number: '08', title: 'Lozenges', copy: 'Oral lozenge formats with tailored flavor and dissolution characteristics.', icon: 'lozenge' },
+  { number: '09', title: 'Oral Dissolving Films', copy: 'Thin oral films with formulation, handling and protective packaging developed together.', icon: 'film' },
 ];
 
 function ProjectSelect({
@@ -218,12 +167,7 @@ export default function Home() {
   return (
     <main>
       <section className="hero" id="top">
-        <nav className="nav shell" aria-label="Primary navigation">
-          <a className="brand" href="#top" aria-label="Jentoor home"><img className="brand-logo" src="/brand/jentoor-white.svg" alt="Jentoor" /></a>
-          <div className="nav-links"><a href="#capabilities">Capabilities</a><a href="#formula">Formulation</a><a href="#standards">Standards</a><a href="#about">About</a></div>
-          <a className="nav-cta" href="#quote">Start a project <ArrowUpRight size={16} /></a>
-          <button className="menu-button" aria-label="Open navigation"><Menu size={19} /></button>
-        </nav>
+        <SiteHeader />
 
         <div className="hero-grid shell">
           <div className="hero-copy">
@@ -233,7 +177,7 @@ export default function Home() {
             <div className="hero-actions"><a className="primary-button" href="#quote">Build your formula <ArrowDownRight size={18} /></a><a className="text-link" href="#factory">Explore our factory <span>↗</span></a></div>
           </div>
           <div className="hero-visual" aria-label="Interactive 3D nutrient capsule. Drag to rotate.">
-            <DeferredFormulaCanvas />
+            <DeferredScene variant="capsule" />
             <div className="orbit orbit-one" /><div className="orbit orbit-two" />
             <div className="formula-note note-one"><b>01</b><span>Active system<br /><strong>Precision blend</strong></span></div>
             <div className="formula-note note-two"><b>22</b><span>Micro-elements<br /><strong>Inside the formula</strong></span></div>
@@ -241,7 +185,7 @@ export default function Home() {
           </div>
         </div>
         <div className="proof-bar shell">
-          <p><ShieldCheck size={19} /> NSF/ANSI 455-2 <span>GMP CERTIFIED</span></p><p><Globe2 size={19} /> BUILT FOR GLOBAL MARKETS</p><p className="proof-stat"><strong>04</strong> DOSAGE FORMS</p><p className="proof-stat"><strong>01</strong> END-TO-END PARTNER</p>
+          <p><ShieldCheck size={19} /> NSF/ANSI 455-2 <span>GMP CERTIFIED</span></p><p><Globe2 size={19} /> BUILT FOR GLOBAL MARKETS</p><p className="proof-stat"><strong>{String(formats.length).padStart(2, '0')}</strong> DOSAGE FORMS</p><p className="proof-stat"><strong>01</strong> END-TO-END PARTNER</p>
         </div>
       </section>
 
@@ -251,7 +195,7 @@ export default function Home() {
       </section>
 
       <section className="formats" id="capabilities">
-        <div className="shell section-heading"><div><p className="section-tag">02 / CAPABILITIES</p><h2>One system.<br /><em>Four intelligent formats.</em></h2></div><p className="side-copy">Select a delivery system engineered around your consumer, formula and market.</p></div>
+        <div className="shell section-heading"><div><p className="section-tag">02 / CAPABILITIES</p><h2>One system.<br /><em>Versatile delivery formats.</em></h2></div><p className="side-copy">From capsules and gummies to oral dissolving films, select a delivery system around your consumer, formula and market. Feasibility and facility qualification are reviewed for each project.</p></div>
         <div className="format-grid shell">
           {formats.map((item) => <article className="format-card" key={item.title}><div className="format-top"><span>{item.number}</span><ArrowUpRight size={17} /></div><FormatIcon type={item.icon} /><h3>{item.title}</h3><p>{item.copy}</p></article>)}
         </div>
@@ -264,7 +208,7 @@ export default function Home() {
             <div className="formula-options" role="radiogroup" aria-label="Formula direction">{formulas.map((item) => <button key={item.id} role="radio" aria-checked={activeFormula.id === item.id} onClick={() => setActiveFormula(item)} className={activeFormula.id === item.id ? 'active' : ''}><span style={{ background: item.color }}>{item.short}</span><b>{item.label}<small>{item.note}</small></b><ArrowRight size={16} /></button>)}</div>
           </div>
           <div className="lab-visual" style={{ '--formula-color': activeFormula.color } as React.CSSProperties}>
-            <div className="lab-canvas"><DeferredFormulaCanvas color={activeFormula.color} compact /></div>
+            <div className="lab-canvas"><DeferredScene variant="tablet" color={activeFormula.color} compact /></div>
             <div className="lab-ring r1" /><div className="lab-ring r2" />
             <div className="lab-readout"><span>ACTIVE CONCEPT</span><strong>{activeFormula.label}</strong><p>FORMULA SIGNAL / <b>LIVE</b></p></div>
             <div className="lab-metric m1"><span>01</span>Outcome</div><div className="lab-metric m2"><span>02</span>Delivery</div><div className="lab-metric m3"><span>03</span>Scale</div>
@@ -318,7 +262,7 @@ export default function Home() {
         </div>
       </section>
 
-      <footer><div className="shell footer-top"><a className="brand" href="#top" aria-label="Jentoor home"><img className="brand-logo" src="/brand/jentoor-white.svg" alt="Jentoor" /></a><p>Evidence-led nutrition.<br />Engineered to scale.</p><a className="back-top" href="#top">BACK TO TOP <ArrowUpRight size={16} /></a></div><div className="shell footer-bottom"><span>© {new Date().getFullYear()} JENTOOR NUTRACEUTICALS</span><span>GUANGZHOU · GLOBAL PARTNERSHIPS</span><span>PRIVACY · TERMS</span></div></footer>
+      <SiteFooter />
     </main>
   );
 }

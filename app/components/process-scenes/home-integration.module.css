@@ -1,0 +1,9 @@
+.heroScene { position:absolute; inset:-35px -15px 10px; }
+.heroControls { position:absolute; bottom:12px; left:0; right:0; display:flex; justify-content:center; align-items:center; gap:20px; font:9px monospace; letter-spacing:1px; color:#cadbc4; z-index:3; }
+.heroControls button { background:transparent; border:1px solid #c8d9be50; color:inherit; padding:8px 12px; cursor:pointer; font:10px Arial,sans-serif; }
+.formulaSection { padding:60px 0 65px; background:#f2f0e4; scroll-margin-top:20px; }
+.formulaSection>div>section { margin:0; grid-template-columns:minmax(0,1fr) minmax(0,1.85fr); gap:24px; }
+.continueBrief { display:inline-flex; padding:16px 22px; background:#143e2e; color:#f4f1df; font-size:14px; }
+.resourceLinks { display:flex; gap:24px; flex-wrap:wrap; align-items:center; margin-top:20px; font-size:13px; }
+.heroControls button:focus-visible,.resourceLinks a:focus-visible { outline:2px solid #d9ff6b; outline-offset:3px; }
+@media(max-width:760px) { .heroScene { inset:0; }.heroControls { bottom:5px; }.formulaSection { padding:30px 0 40px; }.formulaSection>div>section { display:block; } }

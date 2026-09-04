@@ -1,8 +1,23 @@
 /* eslint-disable @next/next/no-html-link-for-pages */
 import { ArrowUpRight } from 'lucide-react';
+import Link from 'next/link';
+import s from './site-chrome.module.css';
+
+const links = [
+  ['/#capabilities', 'Capabilities'], ['/oem-odm', 'OEM / ODM'],
+  ['/factory', 'Factory'], ['/laboratory', 'Laboratory'],
+  ['/formulation', 'Formulation'], ['/technology', 'Technology'],
+  ['/quality', 'Quality'], ['/insights', 'Insights'], ['/faq', 'FAQ'],
+  ['/case-studies/bterlif', 'Case study'], ['/#about', 'About'],
+];
 
 export function SiteHeader() {
-  return <nav className="nav shell" aria-label="Primary navigation"><a className="brand" href="/" aria-label="Jentoor home"><img className="brand-logo" src="/brand/jentoor-white.svg" alt="Jentoor" /></a><div className="nav-links"><a href="/#capabilities">Capabilities</a><a href="/#formula">Formulation</a><a href="/#standards">Standards</a><a href="/#about">About</a><a href="/insights">Insights</a></div><a className="nav-cta" href="/#quote">Start a project <ArrowUpRight size={16} /></a></nav>;
+  return <nav className={`shell ${s.header}`} aria-label="Primary navigation">
+    <Link className="brand" href="/" aria-label="Jentoor home"><img className="brand-logo" src="/brand/jentoor-white.svg" alt="Jentoor" width="132" height="38" /></Link>
+    <div className={s.links}>{links.map(([href, label]) => <Link key={href} href={href}>{label}</Link>)}</div>
+    <Link className={s.cta} href="/#quote">Start a project <ArrowUpRight size={16} /></Link>
+    <details className={s.mobile}><summary>Menu <span aria-hidden="true">＋</span></summary><div className={s.panel}><Link href="/">Home</Link>{links.map(([href,label]) => <a href={href} key={href}>{label}</a>)}<a href="/#quote">Start a project ↗</a></div></details>
+  </nav>;
 }
 
 export function SiteFooter() {
