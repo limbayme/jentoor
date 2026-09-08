@@ -34,10 +34,10 @@ export default function SceneRuntime({ kind, expanded, accent, paused, diagnosti
       <FitCamera hero={presentation === 'hero'} />
       <ContextHealth onUnavailable={onUnavailable} />
       {diagnostics && <FrameAudit />}
-      <ambientLight intensity={presentation === 'hero' ? .55 : .9} />
-      <hemisphereLight args={['#f8ffe8', '#143f32', 1.5]} />
-      <directionalLight position={[3, 6, 4]} intensity={4.2} color="#fff7da" />
-      <directionalLight position={[-4, 2, -3]} intensity={3.4} color="#b7ffd5" />
+      <ambientLight intensity={presentation === 'hero' ? .8 : 1.15} />
+      <hemisphereLight args={['#fffaf0', '#bdc6ad', 1.3]} />
+      <directionalLight position={[3, 6, 4]} intensity={2.8} color="#fff4dd" />
+      <directionalLight position={[-4, 2, -3]} intensity={1.6} color="#e9f0e4" />
       <Turntable key={kind + presentation} paused={paused || dragging} hero={presentation === 'hero'}>{kind === 'tablet' ? <TabletScene expanded={expanded} accent={accent} /> : kind === 'dna' ? <DnaScene expanded={expanded} accent={accent} hero={presentation === 'hero'} /> : kind === 'factory' ? <FactoryScene expanded={expanded} accent={accent} paused={paused} station={station} onStationSelect={onStationSelect} /> : kind === 'gummy' || kind === 'softgel' || kind === 'film' ? <DosageScene kind={kind} accent={accent} expanded={expanded} /> : kind === 'powder' || kind === 'liquid' || kind === 'chewable' || kind === 'lozenge' ? <RemainingDosageScene kind={kind} accent={accent} expanded={expanded}/> : null}</Turntable>
       <OrbitControls onStart={() => setDragging(true)} onEnd={() => setDragging(false)} enableZoom={false} enablePan={false} minPolarAngle={0.7} maxPolarAngle={1.6} rotateSpeed={0.45} target={[0, 0.1, 0]} />
     </Canvas>

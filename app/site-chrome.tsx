@@ -1,24 +1,7 @@
-/* eslint-disable @next/next/no-html-link-for-pages */
+/* eslint-disable @next/next/no-html-link-for-pages, @next/next/no-img-element */
 import { ArrowUpRight } from 'lucide-react';
 import s from './site-chrome.module.css';
-
-const links = [
-  ['/#capabilities', 'Capabilities'], ['/oem-odm', 'OEM / ODM'],
-  ['/factory', 'Factory'], ['/laboratory', 'Laboratory'],
-  ['/formulation', 'Formulation'], ['/technology', 'Technology'],
-  ['/quality', 'Quality'], ['/insights', 'Insights'], ['/faq', 'FAQ'],
-  ['/case-studies/bterlif', 'Case study'], ['/#about', 'About'],
-];
-
-export function SiteHeader() {
-  return <nav className={`shell ${s.header}`} aria-label="Primary navigation">
-    <a className="brand" href="/" aria-label="Jentoor home"><img className="brand-logo" src="/brand/jentoor-white.svg" alt="Jentoor" width="132" height="38" /></a>
-    <div className={s.links}>{links.map(([href, label]) => <a key={href} href={href}>{label}</a>)}</div>
-    <a className={s.cta} href="/#quote">Start a project <ArrowUpRight size={16} /></a>
-    <details className={s.mobile}><summary>Menu <span aria-hidden="true">＋</span></summary><div className={s.panel}><a href="/">Home</a>{links.map(([href,label]) => <a href={href} key={href}>{label}</a>)}<a href="/#quote">Start a project ↗</a></div></details>
-  </nav>;
-}
-
-export function SiteFooter() {
-  return <footer><div className="shell footer-top"><a className="brand" href="/" aria-label="Jentoor home"><img className="brand-logo" src="/brand/jentoor-white.svg" alt="Jentoor" /></a><p>Evidence-led nutrition.<br />Engineered to scale.</p><a className="back-top" href="#top">BACK TO TOP <ArrowUpRight size={16} /></a></div><div className="shell footer-bottom"><span>© {new Date().getFullYear()} JENTOOR NUTRACEUTICALS</span><span>GUANGZHOU · GLOBAL PARTNERSHIPS</span><span>PRIVACY · TERMS</span></div></footer>;
-}
+import { InquiryLink } from './_catalog/inquiry';
+const links=[['/catalog','Catalog'],['/oem-odm','OEM / ODM'],['/manufacturing','Manufacturing'],['/quality','Quality'],['/insights','Resources'],['/about','About']];
+export function SiteHeader({tone='dark'}:{tone?:'light'|'dark'}){return <nav className={`shell ${s.header} ${tone==='light'?s.light:''}`} aria-label="Primary navigation"><a className="brand" href="/" aria-label="Jentoor home"><img className="brand-logo" src={tone==='light'?'/brand/jentoor-orange.svg':'/brand/jentoor-white.svg'} alt="Jentoor" width="132" height="38"/></a><div className={s.links}>{links.map(([href,label])=><a key={href} href={href}>{label}</a>)}</div><div className={s.cta}><InquiryLink/></div><details className={s.mobile}><summary>Menu <span aria-hidden="true">＋</span></summary><div className={s.panel}><a href="/">Home</a>{links.map(([href,label])=><a href={href} key={href}>{label}</a>)}<a href="/solutions">Applications</a><a href="/packaging">Packaging</a><a href="/faq">FAQ</a><a href="/contact">Your inquiry ↗</a></div></details></nav>;}
+export function SiteFooter(){return <footer className="jt-footer"><div className="shell jt-footer-grid"><div><a href="/" aria-label="Jentoor home"><img src="/brand/jentoor-white.svg" alt="Jentoor" width="145" height="42"/></a><p>Thoughtful nutrition.<br/>From concept to manufacturing.</p><a className="jt-footer-cta" href="/contact">Start a conversation <ArrowUpRight size={18}/></a></div><div><h2>Find your product</h2><a href="/catalog">Product catalog</a><a href="/solutions">Application directions</a><a href="/packaging">Packaging options</a><a href="/oem-odm">OEM / ODM</a></div><div><h2>Explore our process</h2><a href="/factory">Factory</a><a href="/formulation">Formulation</a><a href="/laboratory">Laboratory</a><a href="/quality">Quality & documentation</a></div><div><h2>Useful information</h2><a href="/about">About Jentoor</a><a href="/insights">Buyer guides</a><a href="/faq">Manufacturing FAQ</a><a href="/contact">Contact & inquiries</a></div></div><div className="shell jt-footer-bottom"><span>© {new Date().getFullYear()} Jentoor Nutraceuticals</span><span>GUANGZHOU · GLOBAL PROJECTS</span><div><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="#top">Back to top ↑</a></div></div></footer>;}

@@ -16,10 +16,10 @@ export const dosageFormats = [
   { id:'film', name:'Oral Dissolving Films', model:'film', note:'Film handling, oral experience and individual packaging shape the concept.' },
 ] as const;
 const outcomes = [
-  { id:'daily', name:'Daily Wellness', color:'#d9ff6b' },
-  { id:'energy', name:'Energy + Focus', color:'#7bffc5' },
-  { id:'beauty', name:'Beauty from Within', color:'#e5b5bf' },
-  { id:'sleep', name:'Sleep + Recovery', color:'#94bed7' },
+  { id:'daily', name:'Daily Wellness', color:'#b2c68c' },
+  { id:'energy', name:'Energy + Focus', color:'#d0b47a' },
+  { id:'beauty', name:'Beauty from Within', color:'#d5aaa1' },
+  { id:'sleep', name:'Sleep + Recovery', color:'#a2b8ac' },
 ];
 export type FormulaBrief = { format: string; outcome: string; partnership: 'OEM / ODM'; visualization: '3D concept' | 'Static format study' };
 export default function FormulaLab({ onBriefChange, diagnostics = false }: { onBriefChange?: (brief: FormulaBrief) => void; diagnostics?: boolean }) {
@@ -41,10 +41,10 @@ export default function FormulaLab({ onBriefChange, diagnostics = false }: { onB
         if (!(event.key in steps) && event.key!=='Home' && event.key!=='End') return;
         event.preventDefault(); const next=event.key==='Home'?0:event.key==='End'?dosageFormats.length-1:(index+steps[event.key]+dosageFormats.length)%dosageFormats.length;
         chooseFormat(dosageFormats[next].id); document.getElementById('format-'+dosageFormats[next].id)?.focus();
-      }}>{item.name}<small>{item.model?'3D':'2D'}</small></button>)}</div>
+      }}><span className="jt-dosage-glyph" aria-hidden="true"><span className={'format-symbol '+item.id}><i/><b/><em/></span></span><span>{item.name}</span><small>{item.model?'3D':'2D'}</small></button>)}</div>
       <div className={styles.goal}>PRODUCT DIRECTION<div className={styles.outcomes} role="group" aria-label="Product direction">{outcomes.map(item=><button type="button" aria-pressed={outcomeId===item.id} key={item.id} onClick={()=>{setOutcomeId(item.id);setCopied('');}}>{item.name}</button>)}</div></div>
       <p className={styles.note}>Directions describe the development brief, not verified product claims.</p>
-      <div className={styles.brief}><pre>{brief}</pre><button type="button" onClick={copy}>Copy concept brief ↗</button><span role="status">{copied}</span></div>
+      <div className={styles.brief}><pre>{brief}</pre><button type="button" onClick={copy}>Copy concept brief ↗</button><a className="jt-lab-inquire" href={'/contact?format='+encodeURIComponent(format.name)+'&direction='+encodeURIComponent(outcome.name)}>Discuss this direction ↗</a><span role="status">{copied}</span></div>
     </div>
     <div className={styles.stage} id="formula-view" role="tabpanel" aria-labelledby={'format-'+format.id}>
       <div className={styles.stageHead}><span>OEM / ODM · DELIVERY STUDY</span><span>{format.model?interactive?'3D CONCEPT':'STATIC DEVICE VIEW':'2D FORMAT STUDY'}</span></div>

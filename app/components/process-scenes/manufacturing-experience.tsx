@@ -25,7 +25,7 @@ export default function ManufacturingExperience() {
     </div>
     <div className={styles.stage}>
       <div className={styles.stageHead}><span>JENTOOR / PROCESS ATELIER</span><span>CONCEPT SIMULATION</span></div>
-      <div className={styles.canvas}><DeferredProcessScene kind="factory" expanded={expanded} accent="#d9ff6b" paused={paused} station={station} onStationSelect={setStation} onModeChange={setInteractive}/></div>
+      <div className={styles.canvas}><DeferredProcessScene kind="factory" expanded={expanded} accent="#b2c68c" paused={paused} station={station} onStationSelect={setStation} onModeChange={setInteractive}/></div>
       <div className={styles.caption}><span>{selected.number} / {selected.title.toUpperCase()}</span><p>A visible path through the process.</p><fieldset disabled={!interactive}><button onClick={()=>setExpanded(!expanded)}>{expanded?'Lower filling head':'Lift filling head'} ↗</button><button onClick={()=>setPaused(!paused)}>{paused?'Resume motion':'Pause motion'}</button></fieldset><small>{interactive?'DRAG TO ROTATE · SELECT A WORKSTATION':'STATIC DEVICE VIEW · SELECT A WORKSTATION'}</small></div>
     </div>
   </section>;

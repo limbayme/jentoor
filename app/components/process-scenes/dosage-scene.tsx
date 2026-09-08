@@ -12,12 +12,12 @@ function Gummy({ accent }: { accent: string }) {
     s.quadraticCurveTo(-r, r, -r, r - k); s.lineTo(-r, -r + k); s.quadraticCurveTo(-r, -r, -r + k, -r); return s;
   }, []);
   return <group rotation={[-Math.PI / 2, 0, 0]}>
-    <mesh><extrudeGeometry args={[shape, { depth: 0.3, bevelEnabled: true, bevelSegments: 5, steps: 1, bevelSize: 0.13, bevelThickness: 0.13, curveSegments: 12 }]} /><meshPhysicalMaterial color={accent} roughness={0.23} metalness={0.03} clearcoat={0.9} clearcoatRoughness={0.2} /></mesh>
+    <mesh><extrudeGeometry args={[shape, { depth: 0.3, bevelEnabled: true, bevelSegments: 5, steps: 1, bevelSize: 0.13, bevelThickness: 0.13, curveSegments: 12 }]} /><meshPhysicalMaterial color={accent} roughness={0.4} metalness={0} clearcoat={0.35} clearcoatRoughness={0.2} /></mesh>
   </group>;
 }
 function Softgel({ accent }: { accent: string }) {
   return <group rotation={[0.1, 0.5, -0.2]}>
-    <mesh scale={[0.49, 0.32, 0.91]}><sphereGeometry args={[1, 40, 24]} /><meshPhysicalMaterial color={accent} roughness={0.18} metalness={0.1} clearcoat={1} clearcoatRoughness={0.12} /></mesh>
+    <mesh scale={[0.49, 0.32, 0.91]}><sphereGeometry args={[1, 40, 24]} /><meshPhysicalMaterial color={accent} roughness={0.25} metalness={0} clearcoat={1} clearcoatRoughness={0.12} /></mesh>
     <group scale={[0.49, 1, 0.91]}><Ring radius={1} y={0} tube={0.008} color="#c2d0a2" /></group>
   </group>;
 }
@@ -32,23 +32,23 @@ function Film({ accent }: { accent: string }) {
     }
     const g=new BufferGeometry();g.setAttribute('position',new Float32BufferAttribute(p,3));g.setAttribute('uv',new Float32BufferAttribute(uv,2));g.setIndex(indices);g.computeVertexNormals();return g;
   }, []);
-  return <mesh geometry={geometry}><meshPhysicalMaterial color={accent} metalness={0.05} roughness={0.32} clearcoat={0.65} side={DoubleSide} transparent opacity={0.88} /></mesh>;
+  return <mesh geometry={geometry}><meshPhysicalMaterial color={accent} metalness={0} roughness={0.5} clearcoat={0.2} side={DoubleSide} transparent opacity={0.88} /></mesh>;
 }
 export default function DosageScene({ kind, accent, expanded }: { kind: DosageKind; accent: string; expanded: boolean }) {
   return <group rotation={[0, 0.15, 0]}>
     <Plinth label={kind === 'gummy' ? 'JT / GUMMY DEVELOPMENT' : kind === 'softgel' ? 'JT / SOFTGEL DEVELOPMENT' : 'JT / ORAL FILM DEVELOPMENT'} />
     {kind === 'gummy' ? <>
       <Cylinder radius={1.48} height={0.14} position={[0,-1.34,0]} color={palette.metal} />
-      {[-.67,.67].flatMap(x=>[-.67,.67].map(z=><group key={x+':'+z} position={[x,-1.24,z]}><Cylinder radius={.43} height={.025} color={palette.ink} /><Ring radius={.42} tube={.02} /></group>))}
-      <group position={[0,expanded ? .55 : -.15,0]} rotation={[0,.4,.18]}><Gummy accent={accent} /><Label text="JT" position={[0,.44,0]} width={.7} color={palette.ink} /></group>
+      {[-.67,.67].flatMap(x=>[-.67,.67].map(z=><group key={x+':'+z} position={[x,-1.24,z]}><Cylinder radius={.43} height={.025} color="#c9ceb5" metalness={0} /><Ring radius={.42} tube={.02} /></group>))}
+      <group position={[0,expanded ? .55 : -.15,0]} rotation={[0,.4,.18]}><Gummy accent={accent === '#b2c68c' ? '#d6ab7a' : accent} /><Label text="JT" position={[0,.44,0]} width={.7} color={palette.ink} /></group>
       <group position={[1.18,-1.25,.9]} scale={.45}><Gummy accent="#e8aa58" /></group>
       <Label text="MOULD / G–01" position={[-.9,-1.48,1.4]} width={1.1} />
     </> : kind === 'softgel' ? <>
       <Cylinder radius={.92} height={.12} position={[0,-1.34,0]} color={palette.metal} />
       <Cylinder radius={.85} height={.72} position={[0,-.94,0]} color={palette.cream} metalness={.05} />
-      <Cylinder radius={.7} height={.028} position={[0,-.56,0]} color={palette.ink} />
+      <Cylinder radius={.7} height={.028} position={[0,-.56,0]} color="#c9ceb5" metalness={0} />
       <Ring radius={.76} tube={.055} y={-.54} color={palette.metal} />
-      <group position={[0,expanded ? .45 : -.15,0]} rotation={[.3,0,.3]}><Softgel accent={accent} /></group>
+      <group position={[0,expanded ? .45 : -.15,0]} rotation={[.3,0,.3]}><Softgel accent={accent === '#b2c68c' ? '#c99d51' : accent} /></group>
       <group position={[1.25,-1.18,.8]} scale={.6}><Softgel accent="#d3a749" /></group>
       <group position={[-1.2,-1.22,.7]} rotation={[0,0,.16]}><Tablet radius={.6} height={.12} color={palette.green} /></group>
       <Label text="SOFTGEL / SG–01" position={[0,-1.48,1.4]} width={1.5} />

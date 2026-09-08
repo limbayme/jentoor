@@ -5,7 +5,7 @@ import { Float, OrbitControls } from '@react-three/drei';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { Group } from 'three';
 
-function FormulaCapsule({ color = '#d9ff6b', compact = false }: { color?: string; compact?: boolean }) {
+function FormulaCapsule({ color = '#b2c68c', compact = false }: { color?: string; compact?: boolean }) {
   const group = useRef<Group>(null);
   useFrame((state, delta) => {
     if (!group.current) return;
@@ -25,11 +25,11 @@ function FormulaCapsule({ color = '#d9ff6b', compact = false }: { color?: string
       <group ref={group} rotation={[0.2, -0.55, -0.24]} scale={compact ? 0.83 : 1}>
         <mesh position={[0, 0.78, 0]}>
           <sphereGeometry args={[1, 32, 24, 0, Math.PI * 2, 0, Math.PI / 2]} />
-          <meshPhysicalMaterial color={color} roughness={0.08} metalness={0.02} clearcoat={1} transmission={0.08} />
+          <meshPhysicalMaterial color={color} roughness={0.22} metalness={0.02} clearcoat={1} transmission={0.08} />
         </mesh>
         <mesh position={[0, 0.02, 0]}>
           <cylinderGeometry args={[1, 1, 1.55, 32]} />
-          <meshPhysicalMaterial color={color} roughness={0.08} clearcoat={1} transmission={0.08} />
+          <meshPhysicalMaterial color={color} roughness={0.22} clearcoat={1} transmission={0.08} />
         </mesh>
         <mesh position={[0, -0.78, 0]} rotation={[Math.PI, 0, 0]}>
           <sphereGeometry args={[1.01, 32, 24, 0, Math.PI * 2, 0, Math.PI / 2]} />
@@ -42,7 +42,7 @@ function FormulaCapsule({ color = '#d9ff6b', compact = false }: { color?: string
         {beads.map((bead, index) => (
           <mesh key={index} position={[Math.cos(bead.angle) * bead.radius, bead.y, Math.sin(bead.angle) * bead.radius]}>
             <sphereGeometry args={[bead.size, 8, 8]} />
-            <meshStandardMaterial color={index % 3 === 0 ? color : index % 3 === 1 ? '#f3ffad' : '#ffffff'} emissive={color} emissiveIntensity={0.35} />
+            <meshStandardMaterial color={index % 3 === 0 ? color : index % 3 === 1 ? '#e3d4aa' : '#ffffff'} emissive={color} emissiveIntensity={0.05} />
           </mesh>
         ))}
       </group>
@@ -73,8 +73,8 @@ export default function FormulaCanvas({ color, compact = false }: { color?: stri
         gl={{ alpha: true, antialias: true, powerPreference: 'high-performance' }}
       >
         <ambientLight intensity={1.4} />
-        <directionalLight position={[4, 6, 5]} intensity={5} color="#ecffd7" />
-        <pointLight position={[-4, -2, 3]} intensity={16} color={color || '#00e998'} />
+        <directionalLight position={[4, 6, 5]} intensity={3} color="#fff4dd" />
+        <pointLight position={[-4, -2, 3]} intensity={5} color="#e3e9d7" />
         <FormulaCapsule color={color} compact={compact} />
         <OrbitControls enableZoom={false} enablePan={false} rotateSpeed={0.25} minPolarAngle={1.1} maxPolarAngle={2.02} minAzimuthAngle={-0.55} maxAzimuthAngle={0.55} />
       </Canvas>

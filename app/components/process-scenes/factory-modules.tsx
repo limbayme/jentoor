@@ -7,7 +7,7 @@ import { Cylinder, palette, Ring } from './primitives';
 export type Station = 'blend' | 'fill' | 'inspect' | 'pack';
 export function ProcessPipe() {
   const path = useMemo(()=>new CatmullRomCurve3([new Vector3(-.7,1.08,-.32),new Vector3(-.9,1.45,-.32),new Vector3(-1.65,1.4,-.1),new Vector3(-1.65,.76,0)]),[]);
-  return <mesh><tubeGeometry args={[path,48,.045,10,false]}/><meshStandardMaterial color="#bfd0c5" roughness={.23} metalness={.7}/></mesh>;
+  return <mesh><tubeGeometry args={[path,48,.045,10,false]}/><meshStandardMaterial color="#bfd0c5" roughness={.23} metalness={.28}/></mesh>;
 }
 export function PickRobot({ accent, paused, selected }: { accent: string; paused: boolean; selected: boolean }) {
   const shoulder=useRef<Group>(null), elbow=useRef<Group>(null), phase=useRef(0);
@@ -23,7 +23,7 @@ export function PickRobot({ accent, paused, selected }: { accent: string; paused
       <group position={[0,.66,0]} ref={elbow}><Joint accent={accent}/><Arm length={.62}/>
         <group position={[0,.62,0]} rotation={[0,0,.65]}>
           <Cylinder radius={.12} height={.18} color={palette.green}/>
-          {[-.09,.09].map(x=><mesh key={x} position={[x,.18,0]}><boxGeometry args={[.035,.22,.07]}/><meshStandardMaterial color={palette.metal} metalness={.65} roughness={.28}/></mesh>)}
+          {[-.09,.09].map(x=><mesh key={x} position={[x,.18,0]}><boxGeometry args={[.035,.22,.07]}/><meshStandardMaterial color={palette.metal} metalness={.25} roughness={.28}/></mesh>)}
         </group>
       </group>
     </group>
@@ -33,7 +33,7 @@ function Joint({ accent }: { accent: string }) {
   return <group rotation={[Math.PI/2,0,0]}><Cylinder radius={.15} height={.23} color={palette.green}/><Cylinder radius={.075} height={.242} color={accent}/></group>;
 }
 function Arm({ length }: { length: number }) {
-  return <group position={[0,length/2,0]}><mesh><capsuleGeometry args={[.095,length-.19,5,12]}/><meshStandardMaterial color="#c3d2c9" roughness={.27} metalness={.65}/></mesh><mesh position={[0,0,.097]}><boxGeometry args={[.06,length*.6,.008]}/><meshStandardMaterial color={palette.green}/></mesh></group>;
+  return <group position={[0,length/2,0]}><mesh><capsuleGeometry args={[.095,length-.19,5,12]}/><meshStandardMaterial color="#c3d2c9" roughness={.27} metalness={.25}/></mesh><mesh position={[0,0,.097]}><boxGeometry args={[.06,length*.6,.008]}/><meshStandardMaterial color={palette.green}/></mesh></group>;
 }
 export function Scanner({ accent, paused, selected }: { accent: string; paused: boolean; selected: boolean }) {
   const band=useRef<Mesh>(null); const time=useRef(0);

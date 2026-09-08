@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import './catalog-design.css';
+import { JsonLd } from './_catalog/shared';
 
 export const metadata: Metadata = {
   title: 'Jentoor Nutraceuticals | Evidence-led Manufacturing',
@@ -37,7 +39,7 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="//media.jentoor.com" />
         <link rel="preconnect" href="https://media.jentoor.com" crossOrigin="anonymous" />
       </head>
-      <body>{children}</body>
+      <body>{children}<JsonLd data={{'@context':'https://schema.org','@type':'Organization','@id':'https://jentoor.com/#organization',name:'Jentoor',url:'https://jentoor.com',logo:'https://jentoor.com/brand/jentoor-orange.svg',email:'linbeizhenggang@jentoor.com'}} /></body>
     </html>
   );
 }

@@ -1,0 +1,146 @@
+[
+  {
+    "id": "JT-001",
+    "slug": "elderberry-gummies",
+    "sourceCell": "A15",
+    "sourceImage": "content/source/raw/软糖/Codex 图像 2026年9月8日 16_29_17.png"
+  },
+  {
+    "id": "JT-002",
+    "slug": "magnesium-calcium-zinc-drops",
+    "sourceCell": "C15",
+    "sourceImage": "content/source/raw/滴剂/Codex 图像 2026年9月8日 16_55_33.png"
+  },
+  {
+    "id": "JT-003",
+    "slug": "botanical-balance-drops",
+    "sourceCell": "E15",
+    "sourceImage": "content/source/raw/滴剂/Codex 图像 2026年9月8日 16_55_41.png"
+  },
+  {
+    "id": "JT-004",
+    "slug": "trace-mineral-drops",
+    "sourceCell": "G15",
+    "sourceImage": "content/source/raw/滴剂/Codex 图像 2026年9月8日 16_55_44.png"
+  },
+  {
+    "id": "JT-005",
+    "slug": "cayenne-hawthorn-drops",
+    "sourceCell": "A31",
+    "sourceImage": "content/source/raw/滴剂/Codex 图像 2026年9月8日 16_55_47.png"
+  },
+  {
+    "id": "JT-006",
+    "slug": "turmeric-ginger-softgels",
+    "sourceCell": "C31",
+    "sourceImage": "content/source/raw/软胶囊/Codex 图像 2026年9月8日 16_56_13.png"
+  },
+  {
+    "id": "JT-007",
+    "slug": "saffron-softgels",
+    "sourceCell": "E31",
+    "sourceImage": "content/source/raw/软胶囊/Codex 图像 2026年9月8日 16_56_16.png"
+  },
+  {
+    "id": "JT-008",
+    "slug": "pumpkin-seed-oil-softgels",
+    "sourceCell": "G31",
+    "sourceImage": "content/source/raw/软胶囊/Codex 图像 2026年9月8日 16_56_23.png"
+  },
+  {
+    "id": "JT-009",
+    "slug": "iron-melts-oral-films",
+    "sourceCell": "A47",
+    "sourceImage": "content/source/raw/口溶膜/Codex 图像 2026年9月8日 16_56_42.png"
+  },
+  {
+    "id": "JT-010",
+    "slug": "glutathione-oral-films",
+    "sourceCell": "C47",
+    "sourceImage": "content/source/raw/口溶膜/Codex 图像 2026年9月8日 16_56_45.png"
+  },
+  {
+    "id": "JT-011",
+    "slug": "iron-folate-oral-films",
+    "sourceCell": "E47",
+    "sourceImage": "content/source/raw/口溶膜/Codex 图像 2026年9月8日 16_56_49.png"
+  },
+  {
+    "id": "JT-012",
+    "slug": "collagen-peptides-powder",
+    "sourceCell": "G47",
+    "sourceImage": "content/source/raw/粉剂/Codex 图像 2026年9月8日 16_56_58.png"
+  },
+  {
+    "id": "JT-013",
+    "slug": "super-greens-powder",
+    "sourceCell": "A63",
+    "sourceImage": "content/source/raw/粉剂/Codex 图像 2026年9月8日 16_57_09.png"
+  },
+  {
+    "id": "JT-014",
+    "slug": "vitamin-c-chewables",
+    "sourceCell": "C63",
+    "sourceImage": "content/source/raw/咀嚼片/Codex 图像 2026年9月8日 16_58_04.png"
+  },
+  {
+    "id": "JT-015",
+    "slug": "l-glutamine-powder",
+    "sourceCell": "G63",
+    "sourceImage": "content/source/raw/粉剂/Codex 图像 2026年9月8日 16_57_02.png"
+  },
+  {
+    "id": "JT-016",
+    "slug": "collagen-gummies",
+    "sourceCell": "A79",
+    "sourceImage": "content/source/raw/软糖/Codex 图像 2026年9月8日 16_29_07.png"
+  },
+  {
+    "id": "JT-017",
+    "slug": "iron-folic-acid-oral-films",
+    "sourceCell": "C79",
+    "sourceImage": "content/source/raw/口溶膜/Codex 图像 2026年9月8日 16_56_38.png"
+  },
+  {
+    "id": "JT-018",
+    "slug": "cognitive-softgels",
+    "sourceCell": "E79",
+    "sourceImage": "content/source/raw/软胶囊/Codex 图像 2026年9月8日 16_56_20.png"
+  },
+  {
+    "id": "JT-019",
+    "slug": "daily-fiber-chewables",
+    "sourceCell": "G79",
+    "sourceImage": "content/source/raw/咀嚼片/Codex 图像 2026年9月8日 16_57_57.png"
+  },
+  {
+    "id": "JT-020",
+    "slug": "beet-root-powder",
+    "sourceCell": "C95",
+    "sourceImage": "content/source/raw/粉剂/Codex 图像 2026年9月8日 16_57_05.png"
+  },
+  {
+    "id": "JT-021",
+    "slug": "magnesium-glycinate-capsules",
+    "sourceCell": "E95",
+    "sourceImage": "content/source/raw/硬胶囊/Codex 图像 2026年9月8日 16_57_28.png"
+  },
+  {
+    "id": "JT-022",
+    "slug": "prebiotic-fiber-chewables",
+    "sourceCell": "G95",
+    "sourceImage": "content/source/raw/咀嚼片/Codex 图像 2026年9月8日 16_58_00.png"
+  },
+  {
+    "id": "JT-023",
+    "slug": "fish-oil-gummies",
+    "sourceCell": "E111",
+    "sourceImage": "content/source/raw/软糖/Codex 图像 2026年9月8日 16_29_13.png"
+  },
+  {
+    "id": "JT-024",
+    "slug": "ashwagandha-gummies",
+    "sourceCell": "G111",
+    "sourceImage": "content/source/raw/软糖/Codex 图像 2026年9月8日 16_29_21.png"
+  }
+]

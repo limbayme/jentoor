@@ -32,7 +32,7 @@ function Carrier({ index, accent, paused }: { index: number; accent: string; pau
 function Arch({ position, color = palette.metal }: { position: [number, number, number]; color?: string }) {
   return <group position={position}>
     {[-0.44, 0.44].map(x => <Cylinder key={x} radius={0.055} height={1.12} position={[x, -0.25, 0]} color={color} />)}
-    <mesh position={[0, 0.31, 0]}><torusGeometry args={[0.44, 0.055, 8, 32, Math.PI]} /><meshStandardMaterial color={color} roughness={0.3} metalness={0.7} /></mesh>
+    <mesh position={[0, 0.31, 0]}><torusGeometry args={[0.44, 0.055, 8, 32, Math.PI]} /><meshStandardMaterial color={color} roughness={0.3} metalness={0.28} /></mesh>
   </group>;
 }
 export default function FactoryScene({ expanded, accent, paused, station = 'fill', onStationSelect }: { expanded: boolean; accent: string; paused: boolean; station?: Station; onStationSelect?: (station: Station) => void }) {
@@ -54,7 +54,7 @@ export default function FactoryScene({ expanded, accent, paused, station = 'fill
     {Array.from({ length: 12 }, (_, index) => <Carrier key={index} index={index} accent={accent} paused={paused} />)}
     <group position={[-0.7, 0.45, -0.32]}>
       <Cylinder radius={0.46} height={1.04} color={palette.metal} />
-      <mesh position={[0, -0.7, 0]}><cylinderGeometry args={[0.46, 0.09, 0.36, 48]} /><meshStandardMaterial color={palette.metal} metalness={0.7} roughness={0.28} /></mesh>
+      <mesh position={[0, -0.7, 0]}><cylinderGeometry args={[0.46, 0.09, 0.36, 48]} /><meshStandardMaterial color={palette.metal} metalness={0.28} roughness={0.28} /></mesh>
       <Cylinder radius={0.48} height={0.09} position={[0, 0.58, 0]} color={palette.green} />
       <Ring radius={0.44} y={0.64} tube={0.018} color={accent} />
       <Label text="BLEND / 01" width={0.7} position={[0, 0.65, 0]} />
@@ -64,11 +64,11 @@ export default function FactoryScene({ expanded, accent, paused, station = 'fill
     {(['blend','fill','inspect','pack'] as Station[]).map(item => <StationHalo key={item} station={item} selected={station} accent={accent} onSelect={onStationSelect} />)}
     <Arch position={[-1.65, 0.07, 0]} />
     <group ref={head}>
-      <mesh position={[-1.65, 0.61, 0]} rotation={[0, 0, Math.PI / 2]}><cylinderGeometry args={[0.07, 0.07, 0.68, 16]} /><meshStandardMaterial color={palette.metal} metalness={0.7} roughness={0.3} /></mesh>
+      <mesh position={[-1.65, 0.61, 0]} rotation={[0, 0, Math.PI / 2]}><cylinderGeometry args={[0.07, 0.07, 0.68, 16]} /><meshStandardMaterial color={palette.metal} metalness={0.28} roughness={0.3} /></mesh>
       {[-1.83, -1.49].map(x => <Cylinder key={x} radius={0.035} height={0.42} position={[x, 0.34, 0]} />)}
     </group>
     <Arch position={[1.6, 0.07, 0]} color={palette.green} />
-    <group position={[1.6, 0.02, 0]}><mesh><torusGeometry args={[0.37, 0.035, 8, 48]} /><meshStandardMaterial color={accent} emissive={accent} emissiveIntensity={0.3} /></mesh></group>
+    <group position={[1.6, 0.02, 0]}><mesh><torusGeometry args={[0.37, 0.035, 8, 48]} /><meshStandardMaterial color={accent} emissive={accent} emissiveIntensity={0.06} /></mesh></group>
     <group position={[0.8, -0.82, -0.65]} rotation={[0, 0.6, 0]}>
       <Cylinder radius={0.035} height={1.05} />
       <mesh position={[0, 0.55, 0]}><boxGeometry args={[0.9, 0.53, 0.055]} /><meshStandardMaterial color={palette.ink} roughness={0.4} /></mesh>

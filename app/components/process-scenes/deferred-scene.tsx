@@ -9,27 +9,24 @@ function Still({ kind }: Pick<SceneProps, 'kind'>) {
   if (kind === 'capsule' || kind === 'gummy' || kind === 'softgel' || kind === 'film' || kind === 'powder' || kind === 'liquid' || kind === 'chewable' || kind === 'lozenge') return <div className={styles.still}><FormatStill kind={kind} /></div>;
   return <div className={styles.still} aria-label={kind + ' static process illustration'}>
     <svg viewBox="0 0 500 360" className={styles.illustration} aria-hidden="true">
-      <ellipse cx="250" cy="282" rx="175" ry="52" fill="#09281f" stroke="#8da891" strokeWidth="1" />
+      <ellipse cx="250" cy="282" rx="175" ry="52" fill="#dedfcf" stroke="#8da891" strokeWidth="1" />
       <ellipse cx="250" cy="279" rx="158" ry="42" fill="none" stroke="#8da891" strokeWidth=".5" />
       {kind === 'tablet' ? <g>
-        <path d="M150 270V83M350 270V83" stroke="#8da891" strokeWidth="7" />
-        <ellipse cx="250" cy="74" rx="83" ry="22" fill="#153d30" stroke="#d9ff6b" strokeWidth="3" />
-        <path d="M225 78v33h50V78" fill="#94afa2" />
-        <ellipse cx="250" cy="119" rx="65" ry="18" fill="#94afa2" />
-        {[177,214,251].map((y,i) => <g key={y}><path d={'M184 '+y+'v12a66 20 0 0 0 132 0v-12'} fill={i === 1 ? '#b5ce72' : '#b7c4a8'} /><ellipse cx="250" cy={y} rx="66" ry="20" fill={i === 1 ? '#d9ff6b' : '#f4f1df'} /></g>)}
+        <ellipse cx="250" cy="102" rx="55" ry="18" fill="#e6ddc5" />
+        {[177,214,251].map((y,i) => <g key={y}><path d={'M184 '+y+'v12a66 20 0 0 0 132 0v-12'} fill={i === 1 ? '#b5ce72' : '#b7c4a8'} /><ellipse cx="250" cy={y} rx="66" ry="20" fill={i === 1 ? '#8ba168' : '#f4f1df'} /></g>)}
         <path d="M211 173l75 8" stroke="#8da891" />
       </g> : kind === 'dna' ? <g>
-        {Array.from({length:17},(_,i) => { const y=65+i*12; const x=250+Math.sin(i/16*Math.PI*4)*65; return <path key={i} d={'M'+x+' '+y+'H'+(500-x)} stroke={i%2 ? '#d9ff6b' : '#94afa2'} strokeWidth="4" />; })}
-        <path d="M250 65C365 100 135 130 250 161S365 224 250 257" fill="none" stroke="#d9ff6b" strokeWidth="13" />
+        {Array.from({length:17},(_,i) => { const y=65+i*12; const x=250+Math.sin(i/16*Math.PI*4)*65; return <path key={i} d={'M'+x+' '+y+'H'+(500-x)} stroke={i%2 ? '#8ba168' : '#94afa2'} strokeWidth="4" />; })}
+        <path d="M250 65C365 100 135 130 250 161S365 224 250 257" fill="none" stroke="#8ba168" strokeWidth="13" />
         <path d="M250 65C135 100 365 130 250 161S135 224 250 257" fill="none" stroke="#f4f1df" strokeWidth="13" />
       </g> : <g>
         <ellipse cx="250" cy="237" rx="151" ry="49" fill="none" stroke="#94afa2" strokeWidth="18" />
         <path d="M145 228V137a29 29 0 0 1 58 0v51M320 224V144a29 29 0 0 1 58 0v69" fill="none" stroke="#94afa2" strokeWidth="6" />
-        <rect x="223" y="107" width="59" height="76" rx="20" fill="#94afa2" /><ellipse cx="252" cy="110" rx="29" ry="9" fill="#153d30" stroke="#d9ff6b" />
-        {[125,189,254,321,377].map((x,i) => <g key={x} transform={'translate('+x+' '+(i===0 || i===4 ? 217 : 249)+')'}><path d="M-10 0v-30q0-7 6-9v-8h8v8q6 2 6 9V0Z" fill="#f4f1df" /><path d="M-10-24h20v15h-20Z" fill="#153d30" /><path d="M-5-47h10" stroke="#d9ff6b" strokeWidth="5" /></g>)}
-        <circle cx="350" cy="177" r="23" fill="none" stroke="#d9ff6b" strokeWidth="3" />
+        <rect x="223" y="107" width="59" height="76" rx="20" fill="#94afa2" /><ellipse cx="252" cy="110" rx="29" ry="9" fill="#82967b" stroke="#8ba168" />
+        {[125,189,254,321,377].map((x,i) => <g key={x} transform={'translate('+x+' '+(i===0 || i===4 ? 217 : 249)+')'}><path d="M-10 0v-30q0-7 6-9v-8h8v8q6 2 6 9V0Z" fill="#f4f1df" /><path d="M-10-24h20v15h-20Z" fill="#82967b" /><path d="M-5-47h10" stroke="#8ba168" strokeWidth="5" /></g>)}
+        <circle cx="350" cy="177" r="23" fill="none" stroke="#8ba168" strokeWidth="3" />
       </g>}
-      <text x="250" y="325" textAnchor="middle" fill="#d9ff6b" fontFamily="monospace" fontSize="10">JENTOOR / OEM + ODM</text>
+      <text x="250" y="325" textAnchor="middle" fill="#8ba168" fontFamily="monospace" fontSize="10">JENTOOR / OEM + ODM</text>
     </svg>
   </div>;
 }
