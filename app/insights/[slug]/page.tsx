@@ -3,13 +3,13 @@ import type { Metadata } from 'next';
 import { ArrowRight, ArrowUpRight } from 'lucide-react';
 import { notFound } from 'next/navigation';
 import { PageShell, Breadcrumbs, InquiryCta, JsonLd } from '../../_catalog/shared';
-import { articles, sources } from '../article-data';
+import { articles, sources, guideVisual } from '../article-data';
 
 export function generateStaticParams() { return articles.map(({ slug }) => ({ slug })); }
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const a = articles.find(item => item.slug === slug);
-  return a ? { title: `${a.title} | Jentoor`, description: a.description, alternates: { canonical: `https://jentoor.com/insights/${a.slug}` }, openGraph: { title: a.title, description: a.description, type: 'article', images: [{ url: '/brand/campaigns/process-atelier.webp', alt: 'Conceptual manufacturing atelier' }] } } : {};
+  return a ? { title: `${a.title} | Jentoor`, description: a.description, alternates: { canonical: `https://jentoor.com/insights/${a.slug}` }, openGraph: { title: a.title, description: a.description, type: 'article', images: [{ url: guideVisual(a.slug).src, alt: guideVisual(a.slug).alt }] } } : {};
 }
 export default async function ArticlePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -23,7 +23,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
       <aside className="knowledge-toc"><nav aria-label="On this page"><p className="knowledge-kicker">IN THIS GUIDE</p><ol>{article.sections.map(s => <li key={s.id}><a href={`#${s.id}`}>{s.heading.replace(/^\d+ \/ /, '')}</a></li>)}</ol><a className="knowledge-toc-end" href="#checklist">What to prepare <ArrowRight size={14} /></a><a className="knowledge-toc-end" href="#references">Official references <ArrowRight size={14} /></a></nav></aside>
       <article className="knowledge-body" id="guide-content">
         <div className="knowledge-takeaway"><p className="knowledge-kicker">THE WORKING PRINCIPLE</p><p>{article.takeaway}</p></div>
-        <figure className="knowledge-detail-photo"><img src="/brand/campaigns/process-atelier.webp" alt="Conceptual manufacturing atelier" width="1536" height="1024" fetchPriority="high" /><figcaption>Conceptual brand artwork. Explore actual production footage on the factory page.</figcaption></figure>
+        <figure className="knowledge-detail-photo"><img src={guideVisual(article.slug).src} alt={guideVisual(article.slug).alt} width="1536" height="1024" fetchPriority="high" /><figcaption>Manufacturing and product imagery. Explore the process collection on the factory page.</figcaption></figure>
         <figure className="knowledge-process"><figcaption>Planning sequence / adapt to the project</figcaption><ol>{article.steps.map((step, i) => <li key={step}><span>{String(i + 1).padStart(2, '0')}</span>{step}</li>)}</ol></figure>
         {article.sections.map(s => <section className="knowledge-prose-section" id={s.id} key={s.id}><h2>{s.heading}</h2>{s.paragraphs.map(p => <p key={p}>{p}</p>)}{s.bullets && <ul>{s.bullets.map(b => <li key={b}>{b}</li>)}</ul>}{s.sourceIds && <div className="knowledge-source-links">{s.sourceIds.map(id => <a key={id} href={sources[id].url}>{sources[id].title} <ArrowUpRight size={13} /></a>)}</div>}</section>)}
         <section className="knowledge-checklist" id="checklist"><p className="knowledge-kicker">YOUR NEXT CONVERSATION</p><h2>What to prepare</h2><ul>{article.checklist.map(c => <li key={c}>{c}</li>)}</ul><a className="knowledge-inline-link" href="/contact">Discuss your product brief <ArrowRight size={17} /></a></section>

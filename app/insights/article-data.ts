@@ -124,3 +124,11 @@ export const articles: Article[] = [
     checklist: ['Approved formula and serving data reconciled', 'Core statements and full component information reviewed', 'Claims and supporting evidence assessed', 'Actual-size proof, seam and code positions checked', 'Final version and change-control owner recorded'], sourceIds: ['labeling', 'facts', 'claims', 'advertising', 'approval'],
   },
 ];
+
+export const guideVisuals = [
+ {src:'/media/2026-09/dosage-samples.webp',alt:'Capsule and tablet samples for product development'},
+ {src:'/media/2026-09/production-hall.webp',alt:'Bright manufacturing hall with enclosed processing equipment'},
+ {src:'/media/2026-09/formulation-equipment.webp',alt:'Precision weighing and formulation equipment'},
+ {src:'/media/2026-09/packing.webp',alt:'Bottles and cartons at the packaging stage'},
+];
+export function guideVisual(slug:string){return guideVisuals[Math.max(0,articles.findIndex(a=>a.slug===slug))%guideVisuals.length];}
