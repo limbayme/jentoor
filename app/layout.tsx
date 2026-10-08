@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Script from 'next/script';
 import './globals.css';
 import './catalog-design.css';
 import { JsonLd } from './_catalog/shared';
@@ -38,6 +39,13 @@ export default function RootLayout({
       <head>
         <link rel="dns-prefetch" href="//media.jentoor.com" />
         <link rel="preconnect" href="https://media.jentoor.com" crossOrigin="anonymous" />
+        <Script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZBYD3NTR8" />
+        <Script id="google-analytics">
+          {`window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-0ZBYD3NTR8');`}
+        </Script>
       </head>
       <body>{children}<JsonLd data={{'@context':'https://schema.org','@type':'Organization','@id':'https://jentoor.com/#organization',name:'Jentoor',url:'https://jentoor.com',logo:'https://jentoor.com/brand/jentoor-orange.svg',email:'linbeizhenggang@jentoor.com'}} /></body>
     </html>
